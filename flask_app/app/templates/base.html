@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    {% block title %}
+      {% if title %}
+      <title>{{ title }} - Click Clack Type</title>
+      {% else %}
+      <title>Welcome to Click Clack Type</title>
+      {% endif %}
+    {% endblock %}
+    </head>
+    <body>
+        <div><a href="/index">Home</a></div>
+        <div><a href="/play">Play</a> or <a href="/play_for_fun">Play for fun</a></div>
+        <div><a href="/known">Known Words</a></div>
+        <div><a href="/tried">Tried Words</a></div>
+        <div><a href="/untried">Untried Words</a></div>
+        <hr>
+        {% block content %}{% endblock %}
+    </body>
+</html>

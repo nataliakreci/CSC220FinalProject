@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<td>
+  <form action="{{ url_for('game') }}" method="post">
+    <input type="hidden" name="game" value="{{ ticket.id }}"/>
+    <input type="submit" class="btn btn-xs btn-danger" value="Kill"/>
+  </form>
+</td>
+{% endblock %}

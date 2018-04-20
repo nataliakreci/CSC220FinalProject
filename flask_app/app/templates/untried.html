@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+	{% if images %}
+    	<p>Hi, {{ user.username }}! Here are the words you have not tried: </p>
+    	{% for image in images %}
+    		<div><p><b>{{ image.word }}</b></p></div>
+    	{% endfor %}
+    {% else %}
+    	<p>Hi, {{ user.username }}! You did not try any word yet that you do not know. Play some more <a href="/play">Start playing.</a> </p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if images %}
+    <h1>Image</h1>
+
+    <div class="full-img">
+      <img class="displayed-img">
+    </div>
+    Your answer:<br>
+  	<input class="input" type="text" name="input" value="">
+  	<br>
+	<button class="dark">Next</button>
+
+    <div class="thumb-bar">
+
+
+    </div>
+    <script>
+    	var images = {{ images|tojson }};
+    	initialize()
+    	function initialize() {
+			var displayedImage = document.querySelector('.displayed-img');
+			var img = images[0]
+			displayedImage.setAttribute('src', 'static/'+img.image);
+			displayedImage.setAttribute('width', '200');
+			displayedImage.setAttribute('height', '200');
+			displayedImage.setAttribute('id', img.word);
+	
+			btn = document.querySelector('button');
+	
+			btn.onclick= function() {
+				var input = document.querySelector('.input');
+				if (input.value==displayedImage.id){
+					alert("correct");
+					window.location.href = "/know/"+img.word;
+					//var index = Math.floor(Math.random() * images.length);
+					//var img = images[index]
+					//displayedImage.setAttribute('src', 'static/'+img.image);
+					//displayedImage.setAttribute('id', img.word);
+					//input.value= '';
+				}
+				else{
+					alert("try again");
+					input.value= '';
+				}
+			}
+		}
+    </script>
+    {% else %}
+    <div> You know every word </div>
+    {% endif %}
+{% endblock %}
