@@ -9,14 +9,23 @@
       <title>Welcome to Click Clack Type</title>
       {% endif %}
     {% endblock %}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     </head>
     <body>
+    	{% block leftbar %}
+    	<div class="col-md-3">
         <div><a href="/index">Home</a></div>
         <div><a href="/play">Play</a> or <a href="/play_for_fun">Play for fun</a></div>
         <div><a href="/known">Known Words</a></div>
         <div><a href="/tried">Tried Words</a></div>
         <div><a href="/untried">Untried Words</a></div>
-        <hr>
-        {% block content %}{% endblock %}
+        </div>
+        {% endblock %}
+        <div class="main col-md-4">
+        	{% block content %}{% endblock %}
+        </div>
     </body>
 </html>

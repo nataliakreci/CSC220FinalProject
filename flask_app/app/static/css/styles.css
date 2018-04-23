@@ -1,0 +1,14 @@
+body {
+	margin: 50px;
+}
+
+.main {
+	font-size: 20px;
+	margin-left:40px;
+}
+
+.left {
+	font-size: 20px;
+	margin-left:40px;
+	overflow-y: auto;
+}
