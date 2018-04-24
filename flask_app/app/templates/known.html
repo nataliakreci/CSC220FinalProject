@@ -2,10 +2,16 @@
 
 {% block content %}
     {% if images %}
-    	<p>Hi, {{ user.username }}! Here are the words you already know: </p>
+    	<h1>Hi, {{ user.username }}! </h1>
+    	<p> Here are the words you have spelled correctly: </p>
+    	<br>
+    	{% set total = [0]%}
     	{% for image in images %}
-    		<div><p><b>{{ image.word }}</b> in {{ image.record }} ms.</p></div>
+    		{% set _ = total.append(total.pop() + (image.record|int)/1000) %}
+    		<div><p>  <img src="static/{{ image.image }}" height="50" width="50"> <b>{{ image.word }}</b> in {{ (image.record|int )/1000 }} seconds.</p></div>
     	{% endfor %}
+    	<br>
+    	<div><p>Your total type time has been <b>{{ total[0] }}</b> seconds.</p></div>
     	<div><p><b><a href="/restart">Restart?</a></b></p></div>
     {% else %}
     	<p>Hi, {{ user.username }}! You do not know any word yet. <a href="/play">Start playing.</a> <p>
