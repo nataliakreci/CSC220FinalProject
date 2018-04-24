@@ -2,9 +2,11 @@
 
 {% block content %}
 	{% if images %}
-    	<p>Hi, {{ user.username }}! Here are the words you have not tried: </p>
+    	<h1>Hi, {{ user.username }}! </h1>
+    	<p> Here are the words you have not tried: </p>
+    	<br>
     	{% for image in images %}
-    		<div><p><b>{{ image.word }}</b></p></div>
+    		<div><p><img src="static/{{ image.image }}" height="50" width="50"></p></div>
     	{% endfor %}
     {% else %}
     	<p>Hi, {{ user.username }}! You did not try any word yet that you do not know. Play some more <a href="/play">Start playing.</a> </p>

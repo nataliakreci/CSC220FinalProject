@@ -40,7 +40,7 @@ def select_known_words_user(username):
     """
     conn = create_connection("db.sqlite3")
     cur = conn.cursor()
-    cur.execute("SELECT word, record FROM user_known_images, image WHERE image.image= user_known_images.image AND username=?", (username,))
+    cur.execute("SELECT word, record, image.image FROM user_known_images, image WHERE image.image= user_known_images.image AND username=?", (username,))
     rows = cur.fetchall()
     r = [dict((cur.description[i][0], value) for i, value in enumerate(row)) for row in rows]
     cur.close()
