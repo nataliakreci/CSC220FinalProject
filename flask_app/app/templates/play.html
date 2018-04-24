@@ -10,13 +10,15 @@
     Your answer:<br>
   	<input class="input" id="input" type="text" name="input" value="">
   	<br>
-	<button class="dark">Next</button>
+	<button class="enter">Next</button>
+	<button class="skip">Skip</button>
 
     <div class="thumb-bar">
 
 
     </div>
-    <script>
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript">
     	var images = {{ images|tojson }};
     	initialize()
     	function initialize() {
@@ -28,7 +30,8 @@
 			displayedImage.setAttribute('height', '200');
 			displayedImage.setAttribute('id', img.word);
 	
-			btn = document.querySelector('button');
+			btn = document.querySelector('.enter');
+			btn2 = document.querySelector('.skip');
 			
 			var bool = true;
 			var timeStart;
@@ -60,6 +63,35 @@
 					alert("try again");
 					window.location.href = "/try/"+img.word;
 				}
+			}
+			$(document).keypress(function (e) {
+                if (e.which == 13 || event.keyCode == 13) {
+                    var input = document.querySelector('.input');
+					if (input.value==displayedImage.id){
+						var d= new Date();
+						timeEnd = d.getTime();
+						alert("Correct. Your time was " + (timeEnd-timeStart));
+						var timing= (timeEnd-timeStart)
+						window.location.href = "/know/"+img.word+'/'+timing;
+						//var index = Math.floor(Math.random() * images.length);
+						//var img = images[index]
+						//displayedImage.setAttribute('src', 'static/'+img.image);
+						//displayedImage.setAttribute('id', img.word);
+						//input.value= '';
+					}
+					else{
+						alert("try again");
+						window.location.href = "/try/"+img.word;
+					}
+                }
+            });
+            
+            btn2.onclick= function() {
+				var index = Math.floor(Math.random() * images.length);
+				var img = images[index]
+				displayedImage.setAttribute('src', 'static/'+img.image);
+				displayedImage.setAttribute('id', img.word);	
+				input.value= '';
 			}
 		}
     </script>
