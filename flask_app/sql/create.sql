@@ -106,7 +106,7 @@ insert into image values ("kettle.png", "kettle");
 insert into image values ("key.png", "key");
 insert into image values ("leaf.png", "leaf");
 insert into image values ("lemon.png", "lemon");
-insert into image values ("lightblub.png", "lightbulb");
+insert into image values ("lightbulb.png", "lightbulb");
 insert into image values ("map.png", "map");
 insert into image values ("match.png", "match");
 insert into image values ("mice.png", "mice");

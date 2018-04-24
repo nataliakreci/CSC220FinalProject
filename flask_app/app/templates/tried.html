@@ -4,7 +4,7 @@
 	{% if images %}
     	<h1>Hi, {{ user.username }}! Here are the words you have already tried but do not know yet: </h1>
     	{% for image in images %}
-    		<div><p><b>{{ image.word }}</b></p></div>
+    		<div><p><img src="static/{{ image.image }}" height="50" width="50"></p></div>
     	{% endfor %}
     {% else %}
     	<p>Hi, {{ user.username }}! You did not try any word yet that you do not know. Play some more <a href="/play">Start playing.</a> </p>

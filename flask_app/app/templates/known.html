@@ -4,7 +4,7 @@
     {% if images %}
     	<p>Hi, {{ user.username }}! Here are the words you already know: </p>
     	{% for image in images %}
-    		<div><p><b>{{ image.word }}</b></p></div>
+    		<div><p><b>{{ image.word }}</b> in {{ image.record }} ms.</p></div>
     	{% endfor %}
     	<div><p><b><a href="/restart">Restart?</a></b></p></div>
     {% else %}

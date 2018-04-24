@@ -40,7 +40,7 @@ def select_known_words_user(username):
     """
     conn = create_connection("db.sqlite3")
     cur = conn.cursor()
-    cur.execute("SELECT word FROM user_known_images, image WHERE image.image= user_known_images.image AND username=?", (username,))
+    cur.execute("SELECT word, record FROM user_known_images, image WHERE image.image= user_known_images.image AND username=?", (username,))
     rows = cur.fetchall()
     r = [dict((cur.description[i][0], value) for i, value in enumerate(row)) for row in rows]
     cur.close()
@@ -72,7 +72,7 @@ def select_tried_words_user(username):
     """
     conn = create_connection("db.sqlite3")
     cur = conn.cursor()
-    cur.execute("SELECT word FROM image, user_tried_images WHERE image.image=user_tried_images.image AND username=?", (username,))
+    cur.execute("SELECT image.image, word FROM image, user_tried_images WHERE image.image=user_tried_images.image AND username=?", (username,))
  
     rows = cur.fetchall()
     r = [dict((cur.description[i][0], value) for i, value in enumerate(row)) for row in rows]
@@ -80,7 +80,23 @@ def select_tried_words_user(username):
     conn.commit()
     conn.close()
     return r
-
+    
+def add_tried_word_user(user_word):
+    """
+    Create a new project into the user table
+    :param conn:
+    :param project:
+    :return: project id
+    """
+    conn = create_connection("db.sqlite3")
+    sql = ''' INSERT INTO user_tried_images(username,image)
+              VALUES(?,?) '''
+    cur = conn.cursor()
+    cur.execute(sql, user_word)
+    cur.close()
+    conn.commit()
+    conn.close()
+    
 def remove_from_tried(user, word):
     """
     Create a new project into the user table
@@ -95,9 +111,6 @@ def remove_from_tried(user, word):
     cur.close()
     conn.commit()
     conn.close()
-    # new known_word
-    known_word = ('00:00:06', user, word)
-    add_known_word_user(known_word)
 
 
 def select_untried_words_user(username):
@@ -109,7 +122,6 @@ def select_untried_words_user(username):
     conn = create_connection("db.sqlite3")
     cur = conn.cursor()
     cur.execute("SELECT * FROM image EXCEPT SELECT image.image, word FROM image, (SELECT image, username FROM user_tried_images WHERE username=? UNION SELECT image, username FROM user_known_images WHERE username=?) as seen WHERE image.image= seen.image", (username,username))
-
     rows = cur.fetchall()
     r = [dict((cur.description[i][0], value) for i, value in enumerate(row)) for row in rows]
     cur.close()
@@ -126,6 +138,10 @@ def restart_words(username):
     conn = create_connection("db.sqlite3")
     cur = conn.cursor()
     cur.execute('DELETE FROM user_known_images WHERE username="Megane"')
+    cur.close()
+    conn.commit()
+    cur = conn.cursor()
+    cur.execute('DELETE FROM user_tried_images WHERE username="Megane"')
     cur.close()
     conn.commit()
     conn.close()
@@ -167,13 +183,22 @@ def play_for_fun():
 	query = select_all_images()
 	return render_template('play_for_fun.html', title='Play for fun', images=query)
 
-@app.route('/know/<image>')
-def know(image):
+@app.route('/know/<image>/<time>')
+def know(image, time):
 	user = {'username': 'Megane'}
-	known_word = ('00:00:06', 'Megane', image+".jpg")
+	known_word = (time, 'Megane', image+".png")
+	remove_from_tried('Megane', image+".png")
 	add_known_word_user(known_word)
-	return render_template('know.html', user=user, image=image)
-    
+	return render_template('know.html', user=user, image=image, time=time)
+ 
+@app.route('/try/<image>')
+def tryy(image):
+	user = {'username': 'Megane'}
+	known_word = ('Megane', image+".png")
+	remove_from_tried('Megane', image+".png")
+	add_tried_word_user(known_word)
+	return render_template('try.html', user=user, image=image)
+   
 @app.route('/restart')
 def restart():
 	user = {'username': 'Megane'}
