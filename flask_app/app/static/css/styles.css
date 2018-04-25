@@ -1,14 +1,22 @@
 body {
-	margin: 50px;
+	background-color: #ff9933;
+}
+
+header {
+	padding:50px;
+	background-color: #ff9933;
+	text-align:center;
 }
 
 .main {
+	background-color: #ffffff;
 	font-size: 20px;
-	margin-left:40px;
+	padding:40px;
 }
 
-.left {
+.leftbar {
+	background-color: #ff9933;
 	font-size: 20px;
-	margin-left:40px;
+	padding:40px;
 	overflow-y: auto;
 }
