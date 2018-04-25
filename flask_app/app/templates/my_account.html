@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Hi, {{ information[0].username }}!</h1>
+    <p> Here are different information about your account.<p/>
+    <p>Password: {{ information[0].password }}</p>
+    <br>
+    <p>Explore your scores!</p>
+    <ul>
+    	<li><div><a href="/known">Known Words</a></div></li>
+        <li><div><a href="/tried">Tried Words</a></div></li>
+    	<li><div><a href="/untried">Untried Words</a></div></li>
+    </ul>
+    <br>
+    <p>Do you wanna start over? <a href="/restart">Reset</a></p>
+{% endblock %}
