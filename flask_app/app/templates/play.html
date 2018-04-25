@@ -15,7 +15,7 @@
   	<input class="input" id="input" type="text" name=input value="">
   	<br>
 	<button class="enter">Next</button>
-	<button class="skip">Skip</button>
+	<button class="skip" id="skip" >Skip</button>
 
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -35,6 +35,8 @@
 	
 			btn = document.querySelector('.enter');
 			btn2 = document.querySelector('.skip');
+			document.getElementById("skip").style.visibility="hidden";
+			attempts = 0
 			
 			var bool = true;
 			var timeStart;
@@ -67,6 +69,8 @@
       					});
 				}
 				else{
+					attempts += 1;
+					skip(attempts);
 					alert("Incorrect. Please try again");
 					bool = true;
 					
@@ -96,6 +100,8 @@
       					});
 					}
 					else{
+						attempts += 1;
+						skip(attempts);
 						alert("Incorrect, please try again!");
 						bool = true;
 						
@@ -108,6 +114,15 @@
 					}
                 }
             });
+            
+            function skip(attempts){
+				if(attempts < 3) {
+					document.getElementById("skip").style.visibility="hidden";
+				}
+				if(attempts >= 3){
+					document.getElementById("skip").style.visibility="visible";
+				} 
+			}    
             
             btn2.onclick= function() {
 				window.location.href = "/play";

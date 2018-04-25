@@ -29,6 +29,7 @@
 			
 			btn = document.querySelector('.enter');
 			btn2 = document.querySelector('.skip');
+			document.getElementById("skip").style.visibility="hidden";
 			attempts = 0
 			
 			var bool = true;
@@ -58,6 +59,7 @@
 				}
 				else{
 					attempts += 1;
+					skip(attempts);
 					alert("try again");
 					alert(attempts);
 					input.value= '';
@@ -80,12 +82,22 @@
 					}
 					else{
 						attempts += 1;
+						skip(attempts);
 						alert("try again");
 						alert(attempts);
 						input.value= '';
 					}
                 }
             });
+            
+			function skip(attempts){
+				if(attempts < 3) {
+					document.getElementById("skip").style.visibility="hidden";
+				}
+				if(attempts >= 3){
+					document.getElementById("skip").style.visibility="visible";
+				} 
+			}            
             
             btn2.onclick= function() {
 				var index = Math.floor(Math.random() * images.length);
@@ -95,6 +107,8 @@
 				input.value= '';
 			}
 			
+
+								
 		
 			
 		}
