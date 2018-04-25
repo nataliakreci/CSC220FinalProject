@@ -181,7 +181,7 @@ def play():
 @app.route('/play_for_fun')
 def play_for_fun():
 	query = select_all_images()
-	return render_template('play_for_fun.html', title='Play for fun', images=query)
+	return render_template('play_for_fun.html', title='Play for Fun', images=query)
 
 @app.route('/know/<image>/<time>')
 def know(image, time):

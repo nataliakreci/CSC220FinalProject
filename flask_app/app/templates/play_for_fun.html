@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Image</h1>
-	<p> Hi! Enjoy your game. This will not affect your previous records. You will get to practice everything.</p>
+    <h1>Practice Mode!</h1>
+	<p><b>Welcome to Practice Mode!</b> Feel free to practice spelling and typing words, your time will not be recorded. Have fun!</p>
     <div class="full-img">
       <img class="displayed-img">
     </div>
@@ -10,7 +10,7 @@
   	<input class="input" id="input"  type="text" name="input" value="">
   	<br>
 	<button class="enter" >Enter</button>
-	<button class="skip" >Skip</button>
+	<button class="skip" id="skip" >Skip</button>
 
 
     </div>
@@ -29,6 +29,7 @@
 			
 			btn = document.querySelector('.enter');
 			btn2 = document.querySelector('.skip');
+			attempts = 0
 			
 			var bool = true;
 			var timeStart;
@@ -56,7 +57,9 @@
 					input.value= '';
 				}
 				else{
+					attempts += 1;
 					alert("try again");
+					alert(attempts);
 					input.value= '';
 				}
 			}
@@ -76,7 +79,9 @@
 						input.value= '';
 					}
 					else{
+						attempts += 1;
 						alert("try again");
+						alert(attempts);
 						input.value= '';
 					}
                 }
