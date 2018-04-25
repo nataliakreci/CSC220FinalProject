@@ -3,9 +3,10 @@
 {% block content %}
     <h1>Hi, {{ user.username }}!</h1>
     <p> Let's <a href="/play">play</a> and learn how to type!<p/>
-    <p> Here are all the words available on this app:<p/>
-    
+    <p> Here are all the image you will get to play with on this app:<p/>
+    <div>
     {% for image in images %}
-    <div><p><b>{{ image.word }}</b> :<img src="static/{{ image.image }}" height="50" width="50"></p></div>
+    	<span class="col-md-4"><img src="static/{{ image.image }}" height="70" width="70"></span>
     {% endfor %}
+    </div>
 {% endblock %}

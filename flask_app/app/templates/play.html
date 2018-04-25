@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+
     {% if images %}
     <h1>Image</h1>
 
@@ -8,17 +9,16 @@
       <img class="displayed-img">
     </div>
     Your answer:<br>
-  	<input class="input" id="input" type="text" name="input" value="">
+  	<input class="input" id="input" type="text" name=input value="">
   	<br>
 	<button class="enter">Next</button>
 	<button class="skip">Skip</button>
 
-    <div class="thumb-bar">
-
-
-    </div>
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    
     <script type="text/javascript">
+    	
     	var images = {{ images|tojson }};
     	initialize()
     	function initialize() {
@@ -37,7 +37,9 @@
 			var timeStart;
 			var timeEnd;
 			
-			document.getElementById("input").addEventListener("click", function() {
+			$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+			
+			document.getElementById("input").addEventListener("keypress", function() {
 				if (bool==true){
 					var d = new Date();
 					timeStart = d.getTime();
@@ -49,19 +51,28 @@
 				var input = document.querySelector('.input');
 				if (input.value==displayedImage.id){
 					var d= new Date();
-					timeEnd = d.getTime();
-					alert("Correct. Your time was " + (timeEnd-timeStart));
-					var timing= (timeEnd-timeStart)
-					window.location.href = "/know/"+img.word+'/'+timing;
-					//var index = Math.floor(Math.random() * images.length);
-					//var img = images[index]
-					//displayedImage.setAttribute('src', 'static/'+img.image);
-					//displayedImage.setAttribute('id', img.word);
-					//input.value= '';
+						timeEnd = d.getTime();
+						alert("Correct. Your time was " + (timeEnd-timeStart));
+						var timing= (timeEnd-timeStart)
+						$.getJSON($SCRIPT_ROOT + '/_add_image_known', {
+        					input: img.word,
+        					time: timing,
+      					}, function(data) {
+        					$("#result").text(data.result);
+        					input.value= '';
+        					window.location.href = "/play";
+      					});
 				}
 				else{
-					alert("try again");
-					window.location.href = "/try/"+img.word;
+					alert("Incorrect. Please try again");
+					bool = true;
+					
+					$.getJSON($SCRIPT_ROOT + '/_add_image_tried', {
+        					input: img.word,
+      					}, function(data) {
+        					$("#result").text(data.result);
+        				input.value= '';
+      				});
 				}
 			}
 			$(document).keypress(function (e) {
@@ -72,27 +83,33 @@
 						timeEnd = d.getTime();
 						alert("Correct. Your time was " + (timeEnd-timeStart));
 						var timing= (timeEnd-timeStart)
-						window.location.href = "/know/"+img.word+'/'+timing;
-						//var index = Math.floor(Math.random() * images.length);
-						//var img = images[index]
-						//displayedImage.setAttribute('src', 'static/'+img.image);
-						//displayedImage.setAttribute('id', img.word);
-						//input.value= '';
+						$.getJSON($SCRIPT_ROOT + '/_add_image_known', {
+        					input: img.word,
+        					time: timing,
+      					}, function(data) {
+        					$("#result").text(data.result);
+        					input.value= '';
+        					window.location.href = "/play";
+      					});
 					}
 					else{
-						alert("try again");
-						window.location.href = "/try/"+img.word;
+						alert("Incorrect. Please try again");
+						bool = true;
+						
+						$.getJSON($SCRIPT_ROOT + '/_add_image_tried', {
+        					input: img.word,
+      					}, function(data) {
+        					$("#result").text(data.result);
+        					input.value= '';
+      					});
 					}
                 }
             });
             
             btn2.onclick= function() {
-				var index = Math.floor(Math.random() * images.length);
-				var img = images[index]
-				displayedImage.setAttribute('src', 'static/'+img.image);
-				displayedImage.setAttribute('id', img.word);	
-				input.value= '';
+				window.location.href = "/play";
 			}
+        	
 		}
     </script>
     {% else %}

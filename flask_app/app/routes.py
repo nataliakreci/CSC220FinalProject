@@ -3,6 +3,7 @@ from flask import render_template
 import sqlite3
 from sqlite3 import Error
 import json
+from flask import Flask, jsonify, request
 
 def create_connection(db_file):
     """ create a database connection to a SQLite database """
@@ -181,24 +182,29 @@ def play():
 @app.route('/play_for_fun')
 def play_for_fun():
 	query = select_all_images()
-	return render_template('play_for_fun.html', title='Play for fun', images=query)
+	return render_template('play_for_fun.html', title='Play for Fun', images=query)
 
-@app.route('/know/<image>/<time>')
-def know(image, time):
+@app.route('/_add_image_known')
+def add_image_know():
+	input = request.args.get('input')
+	time = request.args.get('time')
 	user = {'username': 'Megane'}
-	known_word = (time, 'Megane', image+".png")
-	remove_from_tried('Megane', image+".png")
+	known_word = (time, 'Megane', input+".png")
+	remove_from_tried('Megane', input+".png")
 	add_known_word_user(known_word)
-	return render_template('know.html', user=user, image=image, time=time)
- 
-@app.route('/try/<image>')
-def tryy(image):
-	user = {'username': 'Megane'}
-	known_word = ('Megane', image+".png")
-	remove_from_tried('Megane', image+".png")
-	add_tried_word_user(known_word)
-	return render_template('try.html', user=user, image=image)
-   
+	print(input+" known")
+	return jsonify(result=input+" known")
+	
+@app.route('/_add_image_tried')
+def add_image_tried():
+    input = request.args.get('input')
+    user = {'username': 'Megane'}
+    tried_word = ('Megane', input+".png")
+    remove_from_tried('Megane', input+".png")
+    add_tried_word_user(tried_word)
+    print(input+" tried")
+    return jsonify(result=input+" tried")
+    
 @app.route('/restart')
 def restart():
 	user = {'username': 'Megane'}

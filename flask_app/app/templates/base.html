@@ -19,15 +19,19 @@
     	<header class="main-header" role="banner"> <img src ="static/ClickClackType.png" width = '750' height = '170' class = "center" > 
     	</header>
     	{% block leftbar %}
-    	<div class="col-md-3">
+    	<div class="col-md-3 leftbar">
         <div><a href="/index">Home</a></div>
-        <div><a href="/play">Play</a> or <a href="/play_for_fun">Play for fun</a></div>
-        <div><a href="/known">Known Words</a></div>
-        <div><a href="/tried">Tried Words</a></div>
-        <div><a href="/untried">Untried Words</a></div>
+        <div><a href="/play">Play</a></div>
+        <div><a href="/play_for_fun">Practice</a></div>
+        <div><a href="">My Account</a></div>
+        <ul>
+        	<li><div><a href="/known">Known Words</a></div></li>
+        	<li><div><a href="/tried">Tried Words</a></div></li>
+        	<li><div><a href="/untried">Untried Words</a></div></li>
+        </ul>
         </div>
         {% endblock %}
-        <div class="main col-md-4">
+        <div class="main col-md-9">
         	{% block content %}{% endblock %}
         </div>
     </body>
