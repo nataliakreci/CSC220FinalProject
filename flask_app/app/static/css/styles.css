@@ -1,10 +1,11 @@
 body {
-	background-color: #ff9933;
+	background-image: url("CCTBackground.gif");
+	/*background-color: #ff0066;*/
+	padding-right: 150px;
 }
 
 header {
 	padding:50px;
-	background-color: #ff9933;
 	text-align:center;
 }
 
@@ -15,8 +16,11 @@ header {
 }
 
 .leftbar {
-	background-color: #ff9933;
 	font-size: 20px;
 	padding:40px;
 	overflow-y: auto;
+}
+.leftblock {
+	background-color: #ffffff;
+	padding: 10px;
 }
