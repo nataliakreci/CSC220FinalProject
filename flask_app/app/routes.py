@@ -15,6 +15,23 @@ def create_connection(db_file):
     except Error as e:
         print("Error")
         print(e)
+
+def select_user(username):
+	"""
+    Query all rows in the image table
+    :param conn: the Connection object
+    :return:
+    """
+	conn = create_connection("db.sqlite3")
+	cur = conn.cursor()
+	cur.execute("SELECT * FROM user WHERE username=?", (username,))
+	
+	rows = cur.fetchall()
+	r = [dict((cur.description[i][0], value) for i, value in enumerate(row)) for row in rows]
+	cur.close()
+	conn.commit()
+	conn.close()
+	return r
         
 def select_all_images():
     """
@@ -160,19 +177,19 @@ def index():
 def known_words():
 	user = {'username': 'Megane'}
 	query = select_known_words_user('Megane')
-	return render_template('known.html', title='Known', user=user, images=query)
+	return render_template('known_list.html', title='Known', user=user, images=query)
 
 @app.route('/tried')
 def tried_words():
 	user = {'username': 'Megane'}
 	query = select_tried_words_user('Megane')
-	return render_template('tried.html', title='Tried', user=user, images=query)
+	return render_template('tried_list.html', title='Tried', user=user, images=query)
 
 @app.route('/untried')
 def untried_words():
 	user = {'username': 'Megane'}
 	query = select_untried_words_user('Megane')
-	return render_template('untried.html', title='Untried', user=user, images=query)
+	return render_template('untried_list.html', title='Untried', user=user, images=query)
     
 @app.route('/play')
 def play():
@@ -182,7 +199,12 @@ def play():
 @app.route('/play_for_fun')
 def play_for_fun():
 	query = select_all_images()
-	return render_template('play_for_fun.html', title='Play for Fun', images=query)
+	return render_template('practice.html', title='Play for Fun', images=query)
+
+@app.route('/my_account')
+def my_account():
+	query = select_user("Megane")
+	return render_template('my_account.html', title='My Account', information=query)
 
 @app.route('/_add_image_known')
 def add_image_know():

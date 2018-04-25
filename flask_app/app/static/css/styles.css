@@ -1,3 +1,14 @@
+/* Fonts taken from Google - https://fonts.google.com */
+/* Fonts bulletproofed on Font Squirrel - https://www.fontsquirrel.com/tools/webfont-generator, on April. 25th */
+
+@font-face {
+    font-family: 'comfortaabold';
+    src: url('font_body/comfortaa-bold-webfont.woff2') format('woff2'),
+         url('font_body/comfortaa-bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
 	background-image: url("CCTBackground.gif");
 	/*background-color: #ff0066;*/
