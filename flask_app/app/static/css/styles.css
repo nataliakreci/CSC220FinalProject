@@ -2,25 +2,28 @@
 /* Fonts bulletproofed on Font Squirrel - https://www.fontsquirrel.com/tools/webfont-generator, on April. 25th */
 
 @font-face {
-    font-family: 'comfortaabold';
-    src: url('font_body/comfortaa-bold-webfont.woff2') format('woff2'),
-         url('font_body/comfortaa-bold-webfont.woff') format('woff');
+    font-family: 'gamja_flowerregular';
+    src: url('font_body/gamjaflower-regular.woff2') format('woff2'),
+         url('font_body/gamjaflower-regular.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
 
 body {
+	font-family:"gamja_flowerregular";
 	background-image: url("CCTBackground.gif");
 	/*background-color: #ff0066;*/
 	padding-right: 150px;
 }
 
 header {
+	font-family:'gamja_flowerregular';
 	padding:50px;
 	text-align:center;
 }
 
 .main {
+	font-family:'gamja_flowerregular';
 	background-color: #ffffff;
 	font-size: 20px;
 	padding:40px;
