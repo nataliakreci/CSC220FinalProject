@@ -36,30 +36,30 @@
 			btn = document.querySelector('.enter');
 			btn2 = document.querySelector('.skip');
 			document.getElementById("skip").style.visibility="hidden";
-			attempts = 0
+			attempts = 0; // counter for the skip button
 			
-			var bool = true;
-			var timeStart;
-			var timeEnd;
+			var bool = true; // counter to start the timer
+			var timeStart; // start time
+			var timeEnd; // end time
 			
 			$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
 			
 			document.getElementById("input").addEventListener("keypress", function() {
 				if (bool==true){
 					var d = new Date();
-					timeStart = d.getTime();
+					timeStart = d.getTime(); // timer get started
 					bool = false;
 				}
      		}, false);
 	
-			btn.onclick= function() {
+			btn.onclick= function() { // function to check if the input is correct, after clicking the button
 				var input = document.querySelector('.input');
 				if (input.value==displayedImage.id){
 					var d= new Date();
-					timeEnd = d.getTime();
+					timeEnd = d.getTime(); // timer stopped
 						alert("Correct. Your time was " + ((timeEnd-timeStart)/1000) + "seconds!");
 						var timing= (timeEnd-timeStart)
-						$.getJSON($SCRIPT_ROOT + '/_add_image_known', {
+						$.getJSON($SCRIPT_ROOT + '/_add_image_known', { // calling the python function which will add the data to the db
         					input: img.word,
         					time: timing,
       					}, function(data) {
@@ -70,11 +70,11 @@
 				}
 				else{
 					attempts += 1;
-					skip(attempts);
+					skip(attempts); // check if the skip button should appear
 					alert("Incorrect. Please try again");
-					bool = true;
+					bool = true; // to restart the timer
 					
-					$.getJSON($SCRIPT_ROOT + '/_add_image_tried', {
+					$.getJSON($SCRIPT_ROOT + '/_add_image_tried', { // calling the python function which will add the data to the db
         					input: img.word,
       					}, function(data) {
         					$("#result").text(data.result);
@@ -82,7 +82,7 @@
       				});
 				}
 			}
-			$(document).keypress(function (e) {
+			$(document).keypress(function (e) { // function to check if the input is correct, after pressing enter
                 if (e.which == 13 || event.keyCode == 13) {
                     var input = document.querySelector('.input');
 					if (input.value==displayedImage.id){
@@ -90,7 +90,7 @@
 						timeEnd = d.getTime();
 						alert("Correct. Your time was " + ((timeEnd-timeStart)/1000) + "seconds!");
 						var timing= (timeEnd-timeStart)
-						$.getJSON($SCRIPT_ROOT + '/_add_image_known', {
+						$.getJSON($SCRIPT_ROOT + '/_add_image_known', { // calling the python function which will add the data to the db
         					input: img.word,
         					time: timing,
       					}, function(data) {
@@ -101,11 +101,11 @@
 					}
 					else{
 						attempts += 1;
-						skip(attempts);
+						skip(attempts); // check if the skip button should appear
 						alert("Incorrect, please try again!");
-						bool = true;
+						bool = true; // to restart the timer
 						
-						$.getJSON($SCRIPT_ROOT + '/_add_image_tried', {
+						$.getJSON($SCRIPT_ROOT + '/_add_image_tried', { // calling the python function which will add the data to the db
         					input: img.word,
       					}, function(data) {
         					$("#result").text(data.result);
@@ -115,7 +115,7 @@
                 }
             });
             
-            function skip(attempts){
+            function skip(attempts){ // if there has been three attempts, the skip button appear
 				if(attempts < 3) {
 					document.getElementById("skip").style.visibility="hidden";
 				}

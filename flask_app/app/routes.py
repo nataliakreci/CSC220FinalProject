@@ -9,8 +9,6 @@ def create_connection(db_file):
     """ create a database connection to a SQLite database """
     try:
         conn = sqlite3.connect(db_file)
-        print("Connection established")
-        print("This is the version of your database: "+sqlite3.version)
         return conn
     except Error as e:
         print("Error")
@@ -191,7 +189,6 @@ def add_image_know():
 	known_word = (time, 'Megane', input+".png")
 	remove_from_tried('Megane', input+".png")
 	add_known_word_user(known_word)
-	print(input+" known")
 	return jsonify(result=input+" known")
 	
 @app.route('/_add_image_tried')
@@ -201,7 +198,6 @@ def add_image_tried():
     tried_word = ('Megane', input+".png")
     remove_from_tried('Megane', input+".png")
     add_tried_word_user(tried_word)
-    print(input+" tried")
     return jsonify(result=input+" tried")
     
 @app.route('/restart')
