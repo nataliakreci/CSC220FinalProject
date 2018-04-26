@@ -36,7 +36,7 @@
 			var timeStart;
 			var timeEnd;
 			
-			document.getElementById("input").addEventListener("click", function() {
+			document.getElementById("input").addEventListener("keypress", function() {
 				if (bool==true){
 					var d = new Date();
 					timeStart = d.getTime();
@@ -58,10 +58,10 @@
 					input.value= '';
 				}
 				else{
+					bool = true;
 					attempts += 1;
 					skip(attempts);
-					alert("try again");
-					alert(attempts);
+					alert("Try again");
 					input.value= '';
 				}
 			}
@@ -81,10 +81,10 @@
 						input.value= '';
 					}
 					else{
+						bool = true;
 						attempts += 1;
 						skip(attempts);
-						alert("try again");
-						alert(attempts);
+						alert("Try again");
 						input.value= '';
 					}
                 }
