@@ -54,7 +54,8 @@
 					var img = images[index]
 					displayedImage.setAttribute('src', 'static/'+img.image);
 					displayedImage.setAttribute('id', img.word);
-					
+					attempts = 0; // counter back to 0
+					document.getElementById("skip").style.visibility="hidden"; // button hidden again
 					input.value= '';
 				}
 				else{
@@ -77,7 +78,8 @@
 						var img = images[index]
 						displayedImage.setAttribute('src', 'static/'+img.image);
 						displayedImage.setAttribute('id', img.word);
-					
+						attempts = 0; // counter back to 0
+						document.getElementById("skip").style.visibility="hidden"; // button hidden again
 						input.value= '';
 					}
 					else{
