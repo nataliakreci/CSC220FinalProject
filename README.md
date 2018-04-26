@@ -2,7 +2,7 @@
 
 This project builds a website called Click Clack Type, which encourages children to type , spell and learn how to type efficiently. The website opens up to a home page which lists all the pictures that are on the app. The side bar has a two playing options: "Play" mode and "Practice" mode. Both modes show an image, and record the type time once a player begins to type the name of the image. The Play mode records the time the player takes to type, as well as which words were correct and which were incorrect. The Practice mode does not record any performance measures, it is a place in which the player can practice and get better without changing their results. 
 
-The entire code for Click Clack Type is downloaded as a file. The main file is called the "flask_app" file, which contains the database, html code, css code, as well as the packages needed to run the website. The "app" file contains the templates and static information. The templates contain the html for every page in Click Clack Type, and the static file contains the pictures of the objects, and the logo. The routes file links the webpage functions. 
+The entire code for Click Clack Type is downloaded as a file. The main folder is called "flask_app", which contains the database, python code, html code, css code, as well as the packages needed to run the website. The "app" folder contains the templates, more python code and the static files. The templates contain the html for every page in Click Clack Type, and the static file contains the pictures of the objects, and the logo. The routes file links the webpage functions and query the database (as well update and delete some data). 
 
 To run Click Clack Type, you need to have Flask installed, because it is a Flask project. 
 
