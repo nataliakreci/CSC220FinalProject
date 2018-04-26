@@ -10,6 +10,9 @@ To install Flask, follow the directions at http://flask.pocoo.org/docs/0.12/inst
 There are two options to install Flask:
 1) to install Flask using your terminal, type:   $ pip install Flask
 2) to install a virtual environment as well (not necessary for this project): $ sudo pip install virtualenv
+Two packages will be needed as well.
+3) $ pip install flask_sqlalchemy
+4) $ pip install flask_migrate
 
 Once Flask is installed, you can run the project. These are the steps to run the app:
 1) Enter the correct file path. First, the main folder, then the flask_app folder inside. Type:
