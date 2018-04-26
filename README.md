@@ -12,6 +12,7 @@ There are two options to install Flask:
 2) to install a virtual environment as well (not necessary for this project): $ sudo pip install virtualenv
 
 Two packages will be needed as well.
+
 3) $ pip install flask_sqlalchemy
 4) $ pip install flask_migrate
 
