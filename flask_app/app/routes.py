@@ -3,7 +3,7 @@ from flask import render_template
 import sqlite3
 from sqlite3 import Error
 import json
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, redirect, url_for 
 
 def create_connection(db_file):
     """ create a database connection to a SQLite database """
@@ -18,9 +18,7 @@ def create_connection(db_file):
 
 def select_user(username):
 	"""
-    Query all rows in the image table
-    :param conn: the Connection object
-    :return:
+    Query the user row in the user table
     """
 	conn = create_connection("db.sqlite3")
 	cur = conn.cursor()
@@ -36,8 +34,6 @@ def select_user(username):
 def select_all_images():
     """
     Query all rows in the image table
-    :param conn: the Connection object
-    :return:
     """
     conn = create_connection("db.sqlite3")
     cur = conn.cursor()
@@ -52,9 +48,7 @@ def select_all_images():
     
 def select_known_words_user(username):
     """
-    Query all rows in the user table
-    :param conn: the Connection object
-    :return:
+    Query all rows of a user in the user_known_images table
     """
     conn = create_connection("db.sqlite3")
     cur = conn.cursor()
@@ -68,10 +62,7 @@ def select_known_words_user(username):
     
 def add_known_word_user(user_word):
     """
-    Create a new project into the user table
-    :param conn:
-    :param project:
-    :return: project id
+    Create a association user - word into the user_known_images table
     """
     conn = create_connection("db.sqlite3")
     sql = ''' INSERT INTO user_known_images(record, username,image)
@@ -84,9 +75,7 @@ def add_known_word_user(user_word):
         
 def select_tried_words_user(username):
     """
-    Query all rows in the user table
-    :param conn: the Connection object
-    :return:
+    Query all rows of user in the user_tried_images table
     """
     conn = create_connection("db.sqlite3")
     cur = conn.cursor()
@@ -101,10 +90,7 @@ def select_tried_words_user(username):
     
 def add_tried_word_user(user_word):
     """
-    Create a new project into the user table
-    :param conn:
-    :param project:
-    :return: project id
+    Create an association user - word into the user_tried_images table
     """
     conn = create_connection("db.sqlite3")
     sql = ''' INSERT INTO user_tried_images(username,image)
@@ -117,10 +103,7 @@ def add_tried_word_user(user_word):
     
 def remove_from_tried(user, word):
     """
-    Create a new project into the user table
-    :param conn:
-    :param project:
-    :return: project id
+    Remove an association user - word from the user_tried_images table
     """
     conn = create_connection("db.sqlite3")
     sql = 'DELETE FROM user_tried_images WHERE username=? AND image=?'
@@ -133,9 +116,7 @@ def remove_from_tried(user, word):
 
 def select_untried_words_user(username):
     """
-    Query all rows in the user table
-    :param conn: the Connection object
-    :return:
+    Query all untried word of a user in the user_tried_images and the user_known_images table
     """
     conn = create_connection("db.sqlite3")
     cur = conn.cursor()
@@ -150,8 +131,6 @@ def select_untried_words_user(username):
 def restart_words(username):
     """
     Delete all progress
-    :param conn:
-    :param username:
     """
     conn = create_connection("db.sqlite3")
     cur = conn.cursor()
@@ -163,9 +142,7 @@ def restart_words(username):
     cur.close()
     conn.commit()
     conn.close()
-    
-
-from flask import Flask, render_template, redirect, url_for          
+         
 @app.route('/')
 @app.route('/index')
 def index():
