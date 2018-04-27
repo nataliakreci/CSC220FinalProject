@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1>Add Images</h1>
+    <p> Welcome dear Admin. If you want to add some images, here is the place! </p>
+    <p> Tell us the name of the image, and which word to associate with. </p>
+    <p><b> Make sure the image is placed in the folder app/static <b></p>
+
+    Your image:<br>
+  	<input class="input_image" id="input_image" type="text" name=input_image value="">
+  	<br>
+  	Your word:<br>
+  	<input class="input_word" id="input_word" type="text" name=input_word value="">
+  	<br>
+	
+	<button class="enter">Next</button>
+
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    
+    <script type="text/javascript">
+    	
+    	initialize()
+    	function initialize() {
+			btn = document.querySelector('.enter');
+			
+			$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+			
+			btn.onclick= function() { // function to add the image to the database
+				var input_image = document.querySelector('.input_image');
+				var input_word = document.querySelector('.input_word');
+				if (input_image.value!= ""||input_word.value!= ""){
+					alert("We will add that Boss");
+					$.getJSON($SCRIPT_ROOT + '/_add', { // calling the python function which will add the data to the db
+        					input_image: input_image.value,
+        					input_word: input_word.value,
+      				}, function(data) {
+        				$("#result").text(data.result);
+        				input_image.value= '';
+        				input_word.value= '';
+        				alert(data.result);
+  					});
+				}
+				else{
+					alert("Come on, type something");
+				}
+			}
+        	
+		}
+    </script>
+{% endblock %}

@@ -111,7 +111,6 @@ def remove_from_tried(user, word):
     conn.commit()
     conn.close()
 
-
 def select_untried_words_user(username):
     """
     Query all untried word of a user in the user_tried_images and the user_known_images table
@@ -140,6 +139,35 @@ def restart_words(username):
     cur.close()
     conn.commit()
     conn.close()
+    
+def add_word(word):
+    """
+    Create a association user - word into the user_known_images table
+    """
+    conn = create_connection("db.sqlite3")
+    sql = ''' INSERT INTO image(image, word)
+              VALUES(?,?) '''
+    cur = conn.cursor()
+    r=cur.execute(sql, word)
+    cur.close()
+    conn.commit()
+    conn.close()
+    return r
+    
+def select_image(image):
+	"""
+    Query the user row in the user table
+    """
+	conn = create_connection("db.sqlite3")
+	cur = conn.cursor()
+	cur.execute("SELECT * FROM image WHERE image=?", (image,))
+	
+	rows = cur.fetchall()
+	r = [dict((cur.description[i][0], value) for i, value in enumerate(row)) for row in rows]
+	cur.close()
+	conn.commit()
+	conn.close()
+	return r
          
 @app.route('/')
 @app.route('/index')
@@ -189,6 +217,7 @@ def add_image_know():
 	known_word = (time, 'Megane', input+".png")
 	remove_from_tried('Megane', input+".png")
 	add_known_word_user(known_word)
+	print("added", time, input)
 	return jsonify(result=input+" known")
 	
 @app.route('/_add_image_tried')
@@ -205,5 +234,23 @@ def restart():
 	user = {'username': 'Megane'}
 	restart_words('Megane')
 	return render_template('brand_new.html', user=user)
+
+@app.route('/admin_add')
+def admin_add():
+	return render_template('admin_add.html')
+	
+@app.route('/_add')
+def add():
+	input_image = request.args.get('input_image')
+	input_word = request.args.get('input_word')
+	if (select_image(input_image)):
+		result= input_word+" could not be added. The image already exists."
+		return jsonify(result=result) 
+	else:
+		word = (input_image, input_word)
+		print(add_word(word))
+		result= input_word +" has been added."
+		return jsonify(result=result)
+		
     
     

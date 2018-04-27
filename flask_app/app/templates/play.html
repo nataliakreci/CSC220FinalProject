@@ -58,7 +58,7 @@
 					var d= new Date();
 					timeEnd = d.getTime(); // timer stopped
 						alert("Correct. Your time was " + ((timeEnd-timeStart)/1000) + "seconds!");
-						var timing= (timeEnd-timeStart)
+						var timing= (timeEnd-timeStart);
 						$.getJSON($SCRIPT_ROOT + '/_add_image_known', { // calling the python function which will add the data to the db
         					input: img.word,
         					time: timing,
