@@ -21,7 +21,19 @@
     	{% block leftbar %}
     	<div class="col-md-3 leftbar">
     	<div class="leftblock" >
+    	<h1>Hi {{ current_user.username }}!</h1>
         <div><a href="/index">Home</a></div>
+        <div><a href="/login">Login</a></div>
+        <div><a href="/logout">Logout</a></div>
+         {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
         <div><a href="/play">Play</a></div>
 		<div><a href="/play_for_fun">Practice</a></div>
         <div><a href="/my_account">My Account</a></div>
