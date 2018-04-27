@@ -2,7 +2,7 @@
 
 {% block content %}
     {% if images %}
-    	<h1>Hi, {{ user.username }}! </h1>
+    	<h1>Hi, {{ current_user.username }}! </h1>
     	<p> Here are the words you have spelled correctly: </p>
     	<br>
     	{% set total = [0]%}
@@ -14,6 +14,6 @@
     	<div><p>Your total type time has been <b>{{ total[0] }}</b> seconds.</p></div>
     	<div><p><b><a href="/restart">Restart?</a></b></p></div>
     {% else %}
-    	<p>Hi, {{ user.username }}! You do not know any word yet. <a href="/play">Start playing.</a> <p>
+    	<p>Hi, {{ current_user.username }}! You do not know any word yet. <a href="/play">Start playing.</a> <p>
     {% endif %}
 {% endblock %}

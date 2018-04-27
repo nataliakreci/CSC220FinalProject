@@ -4,11 +4,12 @@ import sqlite3
 from sqlite3 import Error
 import json
 from flask import Flask, jsonify, request, redirect, url_for 
-from app.forms import LoginForm
+from app.forms import LoginForm, RegistrationForm
 from flask import flash
 from .models import User
 from flask_login import current_user, login_user
 from flask_login import login_required, logout_user
+from app import db
 
 def create_connection(db_file):
     """ create a database connection to a SQLite database """
@@ -18,21 +19,6 @@ def create_connection(db_file):
     except Error as e:
         print("Error")
         print(e)
-
-def select_user(username):
-	"""
-    Query the user row in the user table
-    """
-	conn = create_connection("db.sqlite3")
-	cur = conn.cursor()
-	cur.execute("SELECT * FROM user WHERE username=?", (username,))
-	
-	rows = cur.fetchall()
-	r = [dict((cur.description[i][0], value) for i, value in enumerate(row)) for row in rows]
-	cur.close()
-	conn.commit()
-	conn.close()
-	return r
         
 def select_all_images():
     """
@@ -177,44 +163,37 @@ def select_image(image):
 @app.route('/')
 @app.route('/index')
 def index():
-	if current_user.is_authenticated:
-		user = {'username': current_user.username}
-	else:
-		user = {'username': 'User'}
 	query = select_all_images()
-	return render_template('index.html', title='Home', user=user, images=query)
+	return render_template('index.html', title='Home', images=query)
 
 @app.route('/known')
+@login_required
 def known_words():
-	if current_user.is_authenticated:
-		user = {'username': current_user.username}
-	else:
-		user = {'username': 'User'}
-	query = select_known_words_user('Megane')
-	return render_template('known_list.html', title='Known', user=user, images=query)
+	query = select_known_words_user(current_user.username)
+	return render_template('known_list.html', title='Known', images=query)
 
 @app.route('/tried')
+@login_required
 def tried_words():
-	if current_user.is_authenticated:
-		user = {'username': current_user.username}
-	else:
-		user = {'username': 'User'}
-	query = select_tried_words_user('Megane')
-	return render_template('tried_list.html', title='Tried', user=user, images=query)
+	query = select_tried_words_user(current_user.username)
+	return render_template('tried_list.html', title='Tried', images=query)
 
 @app.route('/untried')
+@login_required
 def untried_words():
 	if current_user.is_authenticated:
 		user = {'username': current_user.username}
 	else:
 		user = {'username': 'User'}
-	query = select_untried_words_user('Megane')
+	query = select_untried_words_user(current_user.username)
 	return render_template('untried_list.html', title='Untried', user=user, images=query)
     
 @app.route('/play')
+@login_required
 def play():
-	query = select_untried_words_user("Megane")
-	return render_template('play.html', title='Play', images=query)
+	if current_user.is_authenticated:
+		query = select_untried_words_user(current_user.username)
+		return render_template('play.html', title='Play', images=query)
 
 @app.route('/play_for_fun')
 def play_for_fun():
@@ -222,52 +201,43 @@ def play_for_fun():
 	return render_template('practice.html', title='Play for Fun', images=query)
 
 @app.route('/my_account')
+@login_required
 def my_account():
-	query = select_user("Megane")
-	return render_template('my_account.html', title='My Account', information=query)
+	return render_template('my_account.html', title='My Account')
 
 @app.route('/_add_image_known')
+@login_required
 def add_image_know():
 	input = request.args.get('input')
 	time = request.args.get('time')
-	user = {'username': 'Megane'}
-	known_word = (time, 'Megane', input+".png")
-	remove_from_tried('Megane', input+".png")
+	known_word = (time, current_user.username, input+".png")
+	remove_from_tried(current_user.username, input+".png")
 	add_known_word_user(known_word)
-	print("added", time, input)
 	return jsonify(result=input+" known")
 	
 @app.route('/_add_image_tried')
+@login_required
 def add_image_tried():
     input = request.args.get('input')
-    user = {'username': 'Megane'}
-    tried_word = ('Megane', input+".png")
-    remove_from_tried('Megane', input+".png")
+    user = {'username': current_user.username}
+    tried_word = (current_user.username, input+".png")
+    remove_from_tried(current_user.username, input+".png")
     add_tried_word_user(tried_word)
     return jsonify(result=input+" tried")
     
 @app.route('/restart')
+@login_required
 def restart():
-	if current_user.is_authenticated:
-		user = {'username': current_user.username}
-	else:
-		user = {'username': 'User'}
-	restart_words('Megane')
-	return render_template('brand_new.html', user=user)
+	restart_words(current_user.username)
+	return render_template('brand_new.html', title='Restarted')
 
 @app.route('/admin_add')
 @login_required
 def admin_add():
 	return render_template('admin_add.html')
 
-@app.route('/add_user')
-def add_user():
-	u = User(username='Megane', email='mamichaud@smith.edu')
-	u.set_password('Megane')
-	print(u.check_password('anotherpassword'))
-	return redirect(url_for('index'))
-		
 @app.route('/_add')
+@login_required
 def add():
 	input_image = request.args.get('input_image')
 	input_word = request.args.get('input_word')
@@ -291,11 +261,40 @@ def login():
             flash('Invalid username or password')
             return redirect(url_for('login'))
         login_user(user, remember=form.remember_me.data)
-        return redirect(url_for('index'))
+        return redirect(url_for('my_account'))
     return render_template('login.html', title='Sign In', form=form)
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
-    return redirect(url_for('index'))        
+    return redirect(url_for('index'))   
     
+@app.route('/change_password')
+@login_required
+def change_password():
+    return render_template('password_change.html') 
+
+@app.route('/_password_changed')
+@login_required
+def password_changed():
+	user= current_user
+	input_password = request.args.get('password')
+	user.set_password(input_password)
+	db.session.commit()
+	return jsonify(result="Your password has been changed.")     
+     
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('Congratulations, you are now a registered user!')
+        return redirect(url_for('login'))
+    return render_template('register.html', title='Register', form=form)

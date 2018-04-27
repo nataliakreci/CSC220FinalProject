@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Hi, {{ information[0].username }}!</h1>
+    <h1>Hi, {{ current_user.username }}!</h1>
     <p> Here are different information about your account.<p/>
-    <p>Password: {{ information[0].password }}</p>
+    <p> Email Address: {{ current_user.email }}</p>
+    <p> Password: <a href="/change_password"> Change password </a></p>
     <br>
     <p>Explore your scores!</p>
     <ul>

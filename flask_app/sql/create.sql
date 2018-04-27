@@ -1,10 +1,8 @@
 delete from image;
-delete from user;
 delete from user_known_images;
 delete from user_tried_images;
 
 drop Table image;
-drop Table user;
 drop Table user_known_images;
 drop Table user_tried_images;
 
@@ -12,18 +10,11 @@ CREATE TABLE IF NOT EXISTS image (
  image text NOT NULL PRIMARY KEY,
  word text NOT NULL
 );
- 
-CREATE TABLE IF NOT EXISTS user (
- username text NOT NULL PRIMARY KEY,
- password text NOT NULL,
- emailaddress text
-);
 
 CREATE TABLE IF NOT EXISTS user_known_images (
  record text NOT NULL,
  username text NOT NULL,
  image text NOT NULL,
- FOREIGN KEY(username) REFERENCES user(username),
  FOREIGN KEY(image) REFERENCES image(image),
  PRIMARY KEY (username, image)
 );
@@ -31,7 +22,6 @@ CREATE TABLE IF NOT EXISTS user_known_images (
 CREATE TABLE IF NOT EXISTS user_tried_images (
  username text NOT NULL,
  image text NOT NULL,
- FOREIGN KEY(username) REFERENCES user(username),
  FOREIGN KEY(image) REFERENCES image(image),
  PRIMARY KEY (username, image)
 );
@@ -50,7 +40,7 @@ insert into image values ("bird.png", "bird");
 insert into image values ("boat.png", "boat");
 insert into image values ("books.png", "books");
 insert into image values ("boots.png", "boots");
-insert into image values ("brain.png", "bridge");
+insert into image values ("brain.png", "brain");
 insert into image values ("bread.png", "bread");
 insert into image values ("bridge.png", "bridge");
 insert into image values ("broom.png", "broom");
@@ -178,6 +168,3 @@ insert into image values ("whale.png", "whale");
 insert into image values ("wolve.png", "wolve");
 insert into image values ("yarn.png", "yarn");
 insert into image values ("zebra.png", "zebra");
-
-insert into user values ("Megane", "1234", "mganemichaud@yahoo.fr");
-

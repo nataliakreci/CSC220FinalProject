@@ -21,10 +21,12 @@
     	{% block leftbar %}
     	<div class="col-md-3 leftbar">
     	<div class="leftblock" >
-    	<h1>Hi {{ current_user.username }}!</h1>
         <div><a href="/index">Home</a></div>
-        <div><a href="/login">Login</a></div>
+        {% if current_user.is_authenticated %}
         <div><a href="/logout">Logout</a></div>
+        {% else %}
+        <div><a href="/login">Login</a></div>
+        {% endif %}
          {% with messages = get_flashed_messages() %}
         {% if messages %}
         <ul>
@@ -34,8 +36,11 @@
         </ul>
         {% endif %}
         {% endwith %}
+        {% if current_user.is_authenticated %}
         <div><a href="/play">Play</a></div>
+        {% endif %}
 		<div><a href="/play_for_fun">Practice</a></div>
+		{% if current_user.is_authenticated %}
         <div><a href="/my_account">My Account</a></div>
         <ul>
         	<li><div><a href="/known">Known Words</a></div></li>
@@ -43,6 +48,7 @@
         	<li><div><a href="/untried">Untried Words</a></div></li>
         </ul>
         <div><a href="/admin_add">Admin: Add</a></div>
+        {% endif %}
         </div>
         </div>
         {% endblock %}
