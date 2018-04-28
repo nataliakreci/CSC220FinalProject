@@ -251,11 +251,13 @@ def admin_access(f):
 
 
 @app.route('/admin_add')
+@login_required
 @admin_access
 def admin_add():
 	return render_template('admin_add.html')
 
 @app.route('/_add')
+@login_required
 @admin_access
 def add():
 	input_image = request.args.get('input_image')
