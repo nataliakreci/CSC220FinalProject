@@ -21,11 +21,11 @@
     	{% block leftbar %}
     	<div class="col-md-3 leftbar">
     	<div class="leftblock" >
-        <div><a href="/index">Home</a></div>
+        <div id="{% if '/index' == request.path %}nav-selected{% else %}nav-item{% endif %}"><a href="/index">Home</a></div>
         {% if current_user.is_authenticated %}
-        <div><a href="/logout">Logout</a></div>
+        <div id="{% if '/login' == request.path %}nav-selected{% else %}nav-item{% endif %}"><a href="/logout">Logout</a></div>
         {% else %}
-        <div><a href="/login">Login</a></div>
+        <div id="{% if '/logout' == request.path %}nav-selected{% else %}nav-item{% endif %}"><a href="/login">Login</a></div>
         {% endif %}
          {% with messages = get_flashed_messages() %}
         {% if messages %}
@@ -37,17 +37,17 @@
         {% endif %}
         {% endwith %}
         {% if current_user.is_authenticated %}
-        <div><a href="/play">Play</a></div>
+        <div id="{% if '/play' == request.path %}nav-selected{% else %}nav-item{% endif %}"><a href="/play">Play</a></div>
         {% endif %}
-		<div><a href="/play_for_fun">Practice</a></div>
+		<div id="{% if '/play_for_fun' == request.path %}nav-selected{% else %}nav-item{% endif %}"><a href="/play_for_fun">Practice</a></div>
 		{% if current_user.is_authenticated %}
-        <div><a href="/my_account">My Account</a></div>
+        <div id="{% if '/my_account' == request.path %}nav-selected{% else %}nav-item{% endif %}"><a href="/my_account">My Account</a></div>
         <ul>
-        	<li><div><a href="/known">Known Words</a></div></li>
-        	<li><div><a href="/tried">Tried Words</a></div></li>
-        	<li><div><a href="/untried">Untried Words</a></div></li>
+        	<li><div id="{% if '/known' == request.path %}nav-selected{% else %}nav-item{% endif %}"><a href="/known">Known Words</a></div></li>
+        	<li><div id="{% if '/tried' == request.path %}nav-selected{% else %}nav-item{% endif %}"><a href="/tried">Tried Words</a></div></li>
+        	<li><div id="{% if '/untried' == request.path %}nav-selected{% else %}nav-item{% endif %}"><a href="/untried">Untried Words</a></div></li>
         </ul>
-        <div><a href="/admin_add">Admin: Add</a></div>
+        <div id="{% if '/admin_add' == request.path %}nav-selected{% else %}nav-item{% endif %}"><a href="/admin_add">Admin: Add</a></div>
         {% endif %}
         </div>
         </div>
