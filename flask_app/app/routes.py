@@ -11,6 +11,15 @@ from flask_login import current_user, login_user
 from flask_login import login_required, logout_user
 from app import db
 
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
+
+admin = Admin(app, name='clickclacktype', template_mode='bootstrap3')
+admin.add_view(ModelView(User, db.session))
+
+from functools import wraps
+
+
 def create_connection(db_file):
     """ create a database connection to a SQLite database """
     try:
@@ -231,13 +240,23 @@ def restart():
 	restart_words(current_user.username)
 	return render_template('brand_new.html', title='Restarted')
 
+def admin_access(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if current_user.admin == 0:
+        	logout_user()
+        	return redirect(url_for('login', next=request.url))
+        return f(*args, **kwargs)
+    return decorated_function
+
+
 @app.route('/admin_add')
-@login_required
+@admin_access
 def admin_add():
 	return render_template('admin_add.html')
 
 @app.route('/_add')
-@login_required
+@admin_access
 def add():
 	input_image = request.args.get('input_image')
 	input_word = request.args.get('input_word')
