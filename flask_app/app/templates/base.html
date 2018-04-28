@@ -47,6 +47,8 @@
         	<li><div id="{% if '/tried' == request.path %}nav-selected{% else %}nav-item{% endif %}"><a href="/tried">Tried Words</a></div></li>
         	<li><div id="{% if '/untried' == request.path %}nav-selected{% else %}nav-item{% endif %}"><a href="/untried">Untried Words</a></div></li>
         </ul>
+        {% endif %}
+        {% if current_user.admin %}
         <div id="{% if '/admin_add' == request.path %}nav-selected{% else %}nav-item{% endif %}"><a href="/admin_add">Admin: Add</a></div>
         {% endif %}
         </div>
