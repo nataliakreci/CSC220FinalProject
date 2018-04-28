@@ -37,3 +37,8 @@ header {
 	background-color: #ffffff;
 	padding: 10px;
 }
+
+#nav-selected a {
+  color: pink;
+  font-size: 30px;
+}
