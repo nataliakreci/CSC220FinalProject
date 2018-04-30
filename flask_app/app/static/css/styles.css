@@ -11,7 +11,8 @@
 
 body {
 	font-family:"gamja_flowerregular";
-	background-image: url("CCTBackground.gif");
+	/*background-image: url("CCTBackground.gif");*/
+	background-color: #fffefb;
 	padding-right: 150px;
 }
 
@@ -23,7 +24,7 @@ header {
 
 .main {
 	font-family:'gamja_flowerregular';
-	background-color: #ffffff;
+	background-color: #fffefb;
 	font-size: 20px;
 	padding:40px;
 }
@@ -34,7 +35,7 @@ header {
 	overflow-y: auto;
 }
 .leftblock {
-	background-color: #ffffff;
+	background-color: #fffefb;
 	padding: 10px;
 }
 
