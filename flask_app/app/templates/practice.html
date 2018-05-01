@@ -35,10 +35,11 @@
 			var bool = true;
 			var timeStart;
 			var timeEnd;
+			var d;
 			
 			document.getElementById("input").addEventListener("keypress", function() {
 				if (bool==true){
-					var d = new Date();
+					d = new Date();
 					timeStart = d.getTime();
 					bool = false;
 				}
@@ -49,7 +50,7 @@
 				if (input.value==displayedImage.id){
 					var d= new Date();
 					timeEnd = d.getTime();
-					alert("Correct. Your time was " + (timeEnd-timeStart));
+					alert("Correct. Your time was " + ((timeEnd-timeStart)/1000) + "seconds!");
 					var index = Math.floor(Math.random() * images.length);
 					var img = images[index]
 					displayedImage.setAttribute('src', 'static/'+img.image);
@@ -73,7 +74,7 @@
 					if (input.value==displayedImage.id){
 						var d= new Date();
 						timeEnd = d.getTime();
-						alert("Correct. Your time was " + (timeEnd-timeStart));
+						alert("Correct. Your time was " + ((timeEnd-timeStart)/1000) + "seconds!");
 						var index = Math.floor(Math.random() * images.length);
 						var img = images[index]
 						displayedImage.setAttribute('src', 'static/'+img.image);
@@ -107,6 +108,7 @@
 				displayedImage.setAttribute('src', 'static/'+img.image);
 				displayedImage.setAttribute('id', img.word);	
 				input.value= '';
+				bool = true; // to restart the timer
 				attempts = 0; // counter back to 0
 				document.getElementById("skip").style.visibility="hidden"; // button hidden again
 			}

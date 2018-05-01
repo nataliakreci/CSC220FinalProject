@@ -1,13 +1,14 @@
+<!-- dropwdown menu taken from https://www.w3schools.com/howto/howto_js_dropdown.asp. To be changed and improved in the future-->
+
 {% extends "base.html" %}
 
 {% block content %}
 
     {% if images %}
-    <h1>Image</h1>
     <p> Welcome to play mode! Here, your time will be recorded when you start typing. </p>
     <p> Click "Next" or your enter button to proceed to the next word. </p>
-    <p> Choose the level of difficulty you would like for the words:</p>
-    <form>
+    <p> Choose the level of difficulty you would like for the words:
+    <!--<form>
     <br>
     <select name="Level of word difficulty?" size = "4" id="opts" onchange="showForm()">
   		<option value="0">Easy</option>
@@ -15,9 +16,17 @@
   		<option value="2">Hard</option>
   		<option value="3">All</option>
 	</select>
-	</form>
-	<br>
-	
+	</form>-->
+	<span class="dropdown">
+		<button onclick="myFunction()" class="dropbtn">Level</button>
+  		<span id="myDropdown" class="dropdown-content">
+    		<a>All</a>
+    		<a>Easy</a>
+    		<a>Medium</a>
+    		<a>hard</a>
+  		</span>
+  	</span>
+  	</p>
     <p><b> Good Luck! <b></p>
 
     <div class="full-img">
@@ -35,8 +44,25 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     
     <script type="text/javascript">
+    			/* When the user clicks on the button, toggle between hiding and showing the dropdown content */
+		function myFunction() {
+    		document.getElementById("myDropdown").classList.toggle("show");
+		}
     
-    	function level() {
+    	// Close the dropdown menu if the user clicks outside of it
+		window.onclick = function(event) {
+  			if (!event.target.matches('.dropbtn')) {
+  				var dropdowns = document.getElementsByClassName("dropdown-content");
+    			var i;
+    			for (i = 0; i < dropdowns.length; i++) {
+      				var openDropdown = dropdowns[i];
+      				if (openDropdown.classList.contains('show')) {
+        			openDropdown.classList.remove('show');
+      				}
+    			}
+  			}
+		}
+    	/*function level() {
         	var selopt = document.getElementById("opts").value;
         	if (selopt == 0) {
         		var images = {{ images|tojson }};
@@ -49,7 +75,7 @@
         	}	
         	if (selopt == 3) {
         		var images = {{ images|tojson }};
-        	}
+        	}*/
     	var images = {{ images|tojson }};
     	initialize()
     	function initialize() {
@@ -155,7 +181,8 @@
             btn2.onclick= function() {
 				window.location.href = "/play";
 			}
-        	
+
+
 		}
     </script>
     {% else %}
