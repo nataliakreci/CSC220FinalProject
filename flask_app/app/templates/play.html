@@ -6,6 +6,18 @@
     <h1>Image</h1>
     <p> Welcome to play mode! Here, your time will be recorded when you start typing. </p>
     <p> Click "Next" or your enter button to proceed to the next word. </p>
+    <p> Choose the level of difficulty you would like for the words:</p>
+    <form>
+    <br>
+    <select name="Level of word difficulty?" size = "4" id="opts" onchange="showForm()">
+  		<option value="0">Easy</option>
+  		<option value="1">Medium</option>
+  		<option value="2">Hard</option>
+  		<option value="3">All</option>
+	</select>
+	</form>
+	<br>
+	
     <p><b> Good Luck! <b></p>
 
     <div class="full-img">
@@ -16,12 +28,28 @@
   	<br>
 	<button class="enter">Next</button>
 	<button class="skip" id="skip" >Skip</button>
+	
+
 
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     
     <script type="text/javascript">
-    	
+    
+    	function level() {
+        	var selopt = document.getElementById("opts").value;
+        	if (selopt == 0) {
+        		var images = {{ images|tojson }};
+        	}
+        	if (selopt == 1) {
+        		var images = {{ images|tojson }};
+        	}
+        	if (selopt == 2) {
+        		var images = {{ images|tojson }};
+        	}	
+        	if (selopt == 3) {
+        		var images = {{ images|tojson }};
+        	}
     	var images = {{ images|tojson }};
     	initialize()
     	function initialize() {
