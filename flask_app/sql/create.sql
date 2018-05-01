@@ -8,8 +8,8 @@ drop Table user_tried_images;
 
 CREATE TABLE IF NOT EXISTS image (
  image text NOT NULL PRIMARY KEY,
- word text NOT NULL
- num text NOT NULL
+ word text NOT NULL,
+ num int NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS user_known_images (

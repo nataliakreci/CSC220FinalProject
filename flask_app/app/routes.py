@@ -33,7 +33,7 @@ def select_all_images():
     """
     Query all rows in the image table
     """
-    conn = create_connection("db.sqlite3")
+    conn = create_connection("app.db")
     cur = conn.cursor()
     cur.execute("SELECT * FROM image")
  
@@ -48,7 +48,7 @@ def select_known_words_user(username):
     """
     Query all rows of a user in the user_known_images table
     """
-    conn = create_connection("db.sqlite3")
+    conn = create_connection("app.db")
     cur = conn.cursor()
     cur.execute("SELECT word, record, image.image FROM user_known_images, image WHERE image.image= user_known_images.image AND username=?", (username,))
     rows = cur.fetchall()
@@ -62,7 +62,7 @@ def add_known_word_user(user_word):
     """
     Create a association user - word into the user_known_images table
     """
-    conn = create_connection("db.sqlite3")
+    conn = create_connection("app.db")
     sql = ''' INSERT INTO user_known_images(record, username,image)
               VALUES(?,?,?) '''
     cur = conn.cursor()
@@ -75,7 +75,7 @@ def select_tried_words_user(username):
     """
     Query all rows of user in the user_tried_images table
     """
-    conn = create_connection("db.sqlite3")
+    conn = create_connection("app.db")
     cur = conn.cursor()
     cur.execute("SELECT image.image, word FROM image, user_tried_images WHERE image.image=user_tried_images.image AND username=?", (username,))
  
@@ -90,7 +90,7 @@ def add_tried_word_user(user_word):
     """
     Create an association user - word into the user_tried_images table
     """
-    conn = create_connection("db.sqlite3")
+    conn = create_connection("app.db")
     sql = ''' INSERT INTO user_tried_images(username,image)
               VALUES(?,?) '''
     cur = conn.cursor()
@@ -103,7 +103,7 @@ def remove_from_tried(user, word):
     """
     Remove an association user - word from the user_tried_images table
     """
-    conn = create_connection("db.sqlite3")
+    conn = create_connection("app.db")
     sql = 'DELETE FROM user_tried_images WHERE username=? AND image=?'
     cur = conn.cursor()
     cur.execute(sql, (user, word,))
@@ -115,9 +115,9 @@ def select_untried_words_user(username):
     """
     Query all untried word of a user in the user_tried_images and the user_known_images table
     """
-    conn = create_connection("db.sqlite3")
+    conn = create_connection("app.db")
     cur = conn.cursor()
-    cur.execute("SELECT * FROM image EXCEPT SELECT image.image, word FROM image, (SELECT image, username FROM user_tried_images WHERE username=? UNION SELECT image, username FROM user_known_images WHERE username=?) as seen WHERE image.image= seen.image", (username,username))
+    cur.execute("SELECT * FROM image EXCEPT SELECT image.image, word, num FROM image, (SELECT image, username FROM user_tried_images WHERE username=? UNION SELECT image, username FROM user_known_images WHERE username=?) as seen WHERE image.image= seen.image", (username,username))
     rows = cur.fetchall()
     r = [dict((cur.description[i][0], value) for i, value in enumerate(row)) for row in rows]
     cur.close()
@@ -129,7 +129,7 @@ def restart_words(username):
     """
     Delete all progress
     """
-    conn = create_connection("db.sqlite3")
+    conn = create_connection("app.db")
     cur = conn.cursor()
     cur.execute('DELETE FROM user_known_images WHERE username="Megane"')
     cur.close()
@@ -144,9 +144,9 @@ def add_word(word):
     """
     Create a association user - word into the user_known_images table
     """
-    conn = create_connection("db.sqlite3")
-    sql = ''' INSERT INTO image(image, word)
-              VALUES(?,?) '''
+    conn = create_connection("app.db")
+    sql = ''' INSERT INTO image(image, word, num)
+              VALUES(?,?,?) '''
     cur = conn.cursor()
     r=cur.execute(sql, word)
     cur.close()
@@ -158,7 +158,7 @@ def select_image(image):
 	"""
     Query the user row in the user table
     """
-	conn = create_connection("db.sqlite3")
+	conn = create_connection("app.db")
 	cur = conn.cursor()
 	cur.execute("SELECT * FROM image WHERE image=?", (image,))
 	
@@ -266,7 +266,7 @@ def add():
 		result= input_word+" could not be added. The image already exists."
 		return jsonify(result=result) 
 	else:
-		word = (input_image, input_word)
+		word = (input_image, input_word, 1)
 		print(add_word(word))
 		result= input_word +" has been added."
 		return jsonify(result=result)

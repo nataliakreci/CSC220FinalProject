@@ -11,7 +11,7 @@
     		<div><p>  <img src="static/{{ image.image }}" height="50" width="50"> <b>{{ image.word }}</b> in {{ (image.record|int )/1000 }} seconds.</p></div>
     	{% endfor %}
     	<br>
-    	<div><p>Your total type time has been <b>{{ total[0] }}</b> seconds.</p></div>
+    	<div><p>Your total type time has been <b>{{ total[0]|round|int }}</b> seconds.</p></div>
     	<div><p><b><a href="/restart">Restart?</a></b></p></div>
     {% else %}
     	<p>Hi, {{ current_user.username }}! You do not know any word yet. <a href="/play">Start playing.</a> <p>
