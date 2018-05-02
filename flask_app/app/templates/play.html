@@ -16,7 +16,7 @@
   		<option value="2">Hard</option>
   		<option value="3">All</option>
 	</select>
-	</form>-->
+	</form>
 	<span class="dropdown">
 		<button onclick="myFunction()" class="dropbtn">Level</button>
   		<span id="myDropdown" class="dropdown-content">
@@ -25,8 +25,14 @@
     		<a>Medium</a>
     		<a>hard</a>
   		</span>
-  	</span>
-  	</p>
+  	</span>-->
+  	<form >
+		<input type="radio" name="choice" value="1" id="easy"> Easy
+		<input type="radio" name="choice" value="2" id="medium"> Medium
+		<input type="radio" name="choice" value="3" id="hard"> Hard
+		<input type="radio" name="choice" value="0" id="all"> All
+	</form>
+	<button class="level">Change level</button>
     <p><b> Good Luck! <b></p>
 
     <div class="full-img">
@@ -79,6 +85,7 @@
     	var images = {{ images|tojson }};
     	initialize()
     	function initialize() {
+    		document.getElementById("{{ level }}").checked = true;
 			var displayedImage = document.querySelector('.displayed-img');
 			var index = Math.floor(Math.random() * images.length);
 			var img = images[index]
@@ -89,6 +96,7 @@
 	
 			btn = document.querySelector('.enter');
 			btn2 = document.querySelector('.skip');
+			btn_level = document.querySelector('.level');
 			document.getElementById("skip").style.visibility="hidden";
 			attempts = 0; // counter for the skip button
 			
@@ -105,7 +113,32 @@
 					bool = false;
 				}
      		}, false);
-	
+     		
+     		
+     		
+			btn_level.onclick= function() { // function to change levels
+				var level = document.forms[0];
+   				var level_asked = "";
+    			var i;
+    			for (i = 0; i < level.length; i++) {
+        			if (level[i].checked) {
+            			level_asked = level[i].value;
+        			}
+    			}
+				if (level_asked==1) {
+					window.location.href = "/play_easy";
+				}
+				else if (level_asked==2) {
+					window.location.href = "/play_medium";
+				}
+				else if (level_asked==3) {
+					window.location.href = "/play_hard";
+				}
+				else {
+					window.location.href = "/play";
+				}
+			}
+			
 			btn.onclick= function() { // function to check if the input is correct, after clicking the button
 				var input = document.querySelector('.input');
 				if (input.value==displayedImage.id){
@@ -118,8 +151,26 @@
         					time: timing,
       					}, function(data) {
         					$("#result").text(data.result);
-        					input.value= '';
-        					window.location.href = "/play";
+        					var level = document.forms[0];
+   							var level_asked = "";
+    						var i;
+    						for (i = 0; i < level.length; i++) {
+        						if (level[i].checked) {
+            						level_asked = level[i].value;
+        						}
+    						}
+							if (level_asked==1) {
+								window.location.href = "/play_easy";
+							}
+							else if (level_asked==2) {
+								window.location.href = "/play_medium";
+							}
+							else if (level_asked==3) {
+								window.location.href = "/play_hard";
+							}
+							else {
+								window.location.href = "/play";
+							}
       					});
 				}
 				else{
@@ -149,8 +200,26 @@
         					time: timing,
       					}, function(data) {
         					$("#result").text(data.result);
-        					input.value= '';
-        					window.location.href = "/play";
+        					var level = document.forms[0];
+   							var level_asked = "";
+    						var i;
+    						for (i = 0; i < level.length; i++) {
+        						if (level[i].checked) {
+            						level_asked = level[i].value;
+        						}
+    						}
+							if (level_asked==1) {
+								window.location.href = "/play_easy";
+							}
+							else if (level_asked==2) {
+								window.location.href = "/play_medium";
+							}
+							else if (level_asked==3) {
+								window.location.href = "/play_hard";
+							}
+							else {
+								window.location.href = "/play";
+							}
       					});
 					}
 					else{
@@ -179,7 +248,26 @@
 			}    
             
             btn2.onclick= function() {
-				window.location.href = "/play";
+				var level = document.forms[0];
+   				var level_asked = "";
+    			var i;
+    			for (i = 0; i < level.length; i++) {
+        			if (level[i].checked) {
+            			level_asked = level[i].value;
+        			}
+				}
+				if (level_asked==1) {
+					window.location.href = "/play_easy";
+				}
+				else if (level_asked==2) {
+					window.location.href = "/play_medium";
+				}
+				else if (level_asked==3) {
+					window.location.href = "/play_hard";
+				}
+				else {
+					window.location.href = "/play";
+				}
 			}
 
 

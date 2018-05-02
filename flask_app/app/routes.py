@@ -123,7 +123,21 @@ def select_untried_words_user(username):
     cur.close()
     conn.commit()
     conn.close()
-    return r    
+    return r
+
+def select_untried_words_level_user(username, level):
+    """
+    Query all untried word of a user in the user_tried_images and the user_known_images table
+    """
+    conn = create_connection("app.db")
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM image WHERE image.num=? EXCEPT SELECT image.image, word, num FROM image, (SELECT image, username FROM user_tried_images WHERE username=? UNION SELECT image, username FROM user_known_images WHERE username=?) as seen WHERE image.image= seen.image;", (level, username,username))
+    rows = cur.fetchall()
+    r = [dict((cur.description[i][0], value) for i, value in enumerate(row)) for row in rows]
+    cur.close()
+    conn.commit()
+    conn.close()
+    return r     
 
 def restart_words(username):
     """
@@ -198,11 +212,27 @@ def untried_words():
 	return render_template('untried_list.html', title='Untried', user=user, images=query)
     
 @app.route('/play')
-@login_required
 def play():
-	if current_user.is_authenticated:
-		query = select_untried_words_user(current_user.username)
-		return render_template('play.html', title='Play', images=query)
+	query = select_untried_words_user(current_user.username)
+	return render_template('play.html', title='Play', images=query, level='all')
+
+@app.route('/play_easy')
+@login_required
+def play_easy():
+	query = select_untried_words_level_user(current_user.username, 1)
+	return render_template('play.html', title='Play Easy', images=query, level='easy')
+	
+@app.route('/play_medium')
+@login_required
+def play_medium():
+	query = select_untried_words_level_user(current_user.username, 2)
+	return render_template('play.html', title='Play Medium', images=query, level='medium')
+	
+@app.route('/play_hard')
+@login_required
+def play_hard():
+	query = select_untried_words_level_user(current_user.username, 3)
+	return render_template('play.html', title='Play Hard', images=query, level='hard')
 
 @app.route('/play_for_fun')
 def play_for_fun():
