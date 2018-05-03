@@ -8,25 +8,7 @@
     <p> Welcome to play mode! Here, your time will be recorded when you start typing. </p>
     <p> Click "Next" or your enter button to proceed to the next word. </p>
     <p> Choose the level of difficulty you would like for the words:
-    <!--<form>
-    <br>
-    <select name="Level of word difficulty?" size = "4" id="opts" onchange="showForm()">
-  		<option value="0">Easy</option>
-  		<option value="1">Medium</option>
-  		<option value="2">Hard</option>
-  		<option value="3">All</option>
-	</select>
-	</form>
-	<span class="dropdown">
-		<button onclick="myFunction()" class="dropbtn">Level</button>
-  		<span id="myDropdown" class="dropdown-content">
-    		<a>All</a>
-    		<a>Easy</a>
-    		<a>Medium</a>
-    		<a>hard</a>
-  		</span>
-  	</span>-->
-  	<form >
+    <form >
 		<input type="radio" name="choice" value="1" id="easy"> Easy
 		<input type="radio" name="choice" value="2" id="medium"> Medium
 		<input type="radio" name="choice" value="3" id="hard"> Hard
@@ -68,20 +50,7 @@
     			}
   			}
 		}
-    	/*function level() {
-        	var selopt = document.getElementById("opts").value;
-        	if (selopt == 0) {
-        		var images = {{ images|tojson }};
-        	}
-        	if (selopt == 1) {
-        		var images = {{ images|tojson }};
-        	}
-        	if (selopt == 2) {
-        		var images = {{ images|tojson }};
-        	}	
-        	if (selopt == 3) {
-        		var images = {{ images|tojson }};
-        	}*/
+    	
     	var images = {{ images|tojson }};
     	initialize()
     	function initialize() {
@@ -114,9 +83,7 @@
 				}
      		}, false);
      		
-     		
-     		
-			btn_level.onclick= function() { // function to change levels
+     		function reload_image() {
 				var level = document.forms[0];
    				var level_asked = "";
     			var i;
@@ -125,7 +92,7 @@
             			level_asked = level[i].value;
         			}
     			}
-				if (level_asked==1) {
+    			if (level_asked==1) {
 					window.location.href = "/play_easy";
 				}
 				else if (level_asked==2) {
@@ -139,102 +106,39 @@
 				}
 			}
 			
-			btn.onclick= function() { // function to check if the input is correct, after clicking the button
+			function check_input(){ // function to check if the input is correct
 				var input = document.querySelector('.input');
 				if (input.value==displayedImage.id){
 					var d= new Date();
-					timeEnd = d.getTime(); // timer stopped
-						alert("Correct. Your time was " + ((timeEnd-timeStart)/1000) + "seconds!");
-						var timing= (timeEnd-timeStart);
-						$.getJSON($SCRIPT_ROOT + '/_add_image_known', { // calling the python function which will add the data to the db
-        					input: img.word,
-        					time: timing,
-      					}, function(data) {
-        					$("#result").text(data.result);
-        					var level = document.forms[0];
-   							var level_asked = "";
-    						var i;
-    						for (i = 0; i < level.length; i++) {
-        						if (level[i].checked) {
-            						level_asked = level[i].value;
-        						}
-    						}
-							if (level_asked==1) {
-								window.location.href = "/play_easy";
-							}
-							else if (level_asked==2) {
-								window.location.href = "/play_medium";
-							}
-							else if (level_asked==3) {
-								window.location.href = "/play_hard";
-							}
-							else {
-								window.location.href = "/play";
-							}
-      					});
+					timeEnd = d.getTime();
+					alert("Correct. Your time was " + ((timeEnd-timeStart)/1000) + "seconds!");
+					var timing= (timeEnd-timeStart)
+					$.getJSON($SCRIPT_ROOT + '/_add_image_known', { // calling the python function which will add the data to the db
+        				input: img.word,
+        				time: timing,
+      				}, function(data) {
+        				reload_image();
+      				});
 				}
 				else{
 					attempts += 1;
 					skip(attempts); // check if the skip button should appear
-					alert("Incorrect. Please try again");
+					alert("Incorrect, please try again!");
 					bool = true; // to restart the timer
-					
 					$.getJSON($SCRIPT_ROOT + '/_add_image_tried', { // calling the python function which will add the data to the db
-        					input: img.word,
-      					}, function(data) {
-        					$("#result").text(data.result);
-        				input.value= '';
-      				});
+        				input: img.word,
+      				}, function(data) {
+    					input.value= '';
+  					});
 				}
-			}
+     		}
+			btn_level.onclick = reload_image;
+			
+			btn.onclick= check_input; // function to check if the input is correct, after clicking the button
+
 			$(document).keypress(function (e) { // function to check if the input is correct, after pressing enter
                 if (e.which == 13 || event.keyCode == 13) {
-                    var input = document.querySelector('.input');
-					if (input.value==displayedImage.id){
-						var d= new Date();
-						timeEnd = d.getTime();
-						alert("Correct. Your time was " + ((timeEnd-timeStart)/1000) + "seconds!");
-						var timing= (timeEnd-timeStart)
-						$.getJSON($SCRIPT_ROOT + '/_add_image_known', { // calling the python function which will add the data to the db
-        					input: img.word,
-        					time: timing,
-      					}, function(data) {
-        					$("#result").text(data.result);
-        					var level = document.forms[0];
-   							var level_asked = "";
-    						var i;
-    						for (i = 0; i < level.length; i++) {
-        						if (level[i].checked) {
-            						level_asked = level[i].value;
-        						}
-    						}
-							if (level_asked==1) {
-								window.location.href = "/play_easy";
-							}
-							else if (level_asked==2) {
-								window.location.href = "/play_medium";
-							}
-							else if (level_asked==3) {
-								window.location.href = "/play_hard";
-							}
-							else {
-								window.location.href = "/play";
-							}
-      					});
-					}
-					else{
-						attempts += 1;
-						skip(attempts); // check if the skip button should appear
-						alert("Incorrect, please try again!");
-						bool = true; // to restart the timer
-						
-						$.getJSON($SCRIPT_ROOT + '/_add_image_tried', { // calling the python function which will add the data to the db
-        					input: img.word,
-      					}, function(data) {
-        					$("#result").text(data.result);
-        					input.value= '';
-      					});
-					}
+                    check_input();
                 }
             });
             
@@ -247,28 +151,7 @@
 				} 
 			}    
             
-            btn2.onclick= function() {
-				var level = document.forms[0];
-   				var level_asked = "";
-    			var i;
-    			for (i = 0; i < level.length; i++) {
-        			if (level[i].checked) {
-            			level_asked = level[i].value;
-        			}
-				}
-				if (level_asked==1) {
-					window.location.href = "/play_easy";
-				}
-				else if (level_asked==2) {
-					window.location.href = "/play_medium";
-				}
-				else if (level_asked==3) {
-					window.location.href = "/play_hard";
-				}
-				else {
-					window.location.href = "/play";
-				}
-			}
+            btn2.onclick= reload_image;
 
 
 		}
