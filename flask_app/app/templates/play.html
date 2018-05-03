@@ -9,10 +9,10 @@
     <p> Click "Next" or your enter button to proceed to the next word. </p>
     <p> Choose the level of difficulty you would like for the words:
     <form >
-		<input type="radio" name="choice" value="1" id="easy"> Easy
-		<input type="radio" name="choice" value="2" id="medium"> Medium
-		<input type="radio" name="choice" value="3" id="hard"> Hard
-		<input type="radio" name="choice" value="0" id="all"> All
+		<input type="radio" name="choice" value="1" id="easy"> Easy</input>
+		<input type="radio" name="choice" value="2" id="medium"> Medium</input>
+		<input type="radio" name="choice" value="3" id="hard"> Hard</input>
+		<input type="radio" name="choice" value="0" id="all"> All</input>
 	</form>
 	<button class="level">Change level</button>
     <p><b> Good Luck! <b></p>
@@ -52,7 +52,7 @@
 		}
     	
     	var images = {{ images|tojson }};
-    	initialize()
+    	initialize();
     	function initialize() {
     		document.getElementById("{{ level }}").checked = true;
 			var displayedImage = document.querySelector('.displayed-img');
@@ -150,8 +150,7 @@
 				if(attempts >= 3){
 					document.getElementById("skip").style.visibility="visible";
 				} 
-			}    
-
+			}
 		}
     </script>
     {% else %}
