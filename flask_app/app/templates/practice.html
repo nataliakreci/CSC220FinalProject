@@ -3,7 +3,15 @@
 {% block content %}
     <h1>Practice Mode!</h1>
 	<p><b>Welcome to Practice Mode!</b> Feel free to practice spelling and typing words, your time will not be recorded. Have fun!</p>
-    <div class="full-img">
+    <p> Decide if you want to practice spelling words:
+    <form >
+		<input type="radio" name="choice" value="0" id="all"> All</input>
+		<p>Or practice one hand:</p>
+		<input type="radio" name="choice" value="4" id="left"> Left Hand</input>
+		<input type="radio" name="choice" value="5" id="right"> Right Hand</input>
+	</form>
+	<button class="mode">Change mode</button>
+	<div class="full-img">
       <img class="displayed-img">
     </div>
     Your answer:<br>
@@ -17,27 +25,29 @@
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript">
     	var images = {{ images|tojson }};
-    	initialize()
+    	initialize();
     	function initialize() {
-			var displayedImage = document.querySelector('.displayed-img');
-			var index = Math.floor(Math.random() * images.length);
-			var img = images[index]
-			displayedImage.setAttribute('src', 'static/'+img.image);
-			displayedImage.setAttribute('width', '200');
-			displayedImage.setAttribute('height', '300');
-			displayedImage.setAttribute('id', img.word);
+    		document.getElementById("{{ mode }}").checked = true;
+    		if ({{ image }}) {
+				var displayedImage = document.querySelector('.displayed-img');
+				var index = Math.floor(Math.random() * images.length);
+				var img = images[index]
+				displayedImage.setAttribute('src', 'static/'+img.image);
+				displayedImage.setAttribute('width', '200');
+				displayedImage.setAttribute('height', '300');
+				displayedImage.setAttribute('id', img.word);
 			
-			btn = document.querySelector('.enter');
-			btn2 = document.querySelector('.skip');
-			document.getElementById("skip").style.visibility="hidden";
-			attempts = 0;
+				btn = document.querySelector('.enter');
+				btn2 = document.querySelector('.skip');
+				document.getElementById("skip").style.visibility="hidden";
+				attempts = 0;
 			
-			var bool = true;
-			var timeStart;
-			var timeEnd;
-			var d;
-			
-			document.getElementById("input").addEventListener("keypress", function() {
+				var bool = true;
+				var timeStart;
+				var timeEnd;
+				var d;
+			}
+			document.getElementById("input").addEventListener("keypress", function() { // function to start the timer
 				if (bool==true){
 					d = new Date();
 					timeStart = d.getTime();
@@ -45,19 +55,13 @@
 				}
      		}, false);
 			
-			btn.onclick= function() { // function to check if the input is correct, after clicking the button
+			function check_input(){ // function to check if the input is correct
 				var input = document.querySelector('.input');
 				if (input.value==displayedImage.id){
 					var d= new Date();
 					timeEnd = d.getTime();
 					alert("Correct. Your time was " + ((timeEnd-timeStart)/1000) + "seconds!");
-					var index = Math.floor(Math.random() * images.length);
-					var img = images[index]
-					displayedImage.setAttribute('src', 'static/'+img.image);
-					displayedImage.setAttribute('id', img.word);
-					attempts = 0; // counter back to 0
-					document.getElementById("skip").style.visibility="hidden"; // button hidden again
-					input.value= '';
+					next_image();
 				}
 				else{
 					bool = true; // to restart the timer
@@ -67,29 +71,23 @@
 					input.value= '';
 				}
 			}
+			
+			function next_image(){ 
+				bool = true; // to restart the timer
+				var index = Math.floor(Math.random() * images.length);
+				var img = images[index]
+				displayedImage.setAttribute('src', 'static/'+img.image);
+				displayedImage.setAttribute('id', img.word);
+				attempts = 0; // counter back to 0
+				document.getElementById("skip").style.visibility="hidden"; // button hidden again					
+				input.value= '';
+			}
+			
+			btn.onclick=check_input;
 
 			$(document).keypress(function (e) { // function to check if the input is correct, after pressing enter
                 if (e.which == 13 || event.keyCode == 13) {
-                    var input = document.querySelector('.input');
-					if (input.value==displayedImage.id){
-						var d= new Date();
-						timeEnd = d.getTime();
-						alert("Correct. Your time was " + ((timeEnd-timeStart)/1000) + "seconds!");
-						var index = Math.floor(Math.random() * images.length);
-						var img = images[index]
-						displayedImage.setAttribute('src', 'static/'+img.image);
-						displayedImage.setAttribute('id', img.word);
-						attempts = 0; // counter back to 0
-						document.getElementById("skip").style.visibility="hidden"; // button hidden again
-						input.value= '';
-					}
-					else{
-						bool = true; // to restart the timer
-						attempts += 1;
-						skip(attempts); // check if the skip button should appear
-						alert("Try again");
-						input.value= '';
-					}
+                    check_input();
                 }
             });
             
@@ -103,20 +101,8 @@
 			}            
             
             btn2.onclick= function() { // change for another another image
-				var index = Math.floor(Math.random() * images.length);
-				var img = images[index]
-				displayedImage.setAttribute('src', 'static/'+img.image);
-				displayedImage.setAttribute('id', img.word);	
-				input.value= '';
-				bool = true; // to restart the timer
-				attempts = 0; // counter back to 0
-				document.getElementById("skip").style.visibility="hidden"; // button hidden again
-			}
-			
-
-								
-		
-			
+				next_image();
+			}		
 		}
     </script>
 {% endblock %}
