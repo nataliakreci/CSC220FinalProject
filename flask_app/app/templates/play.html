@@ -133,6 +133,7 @@
 				}
      		}
 			btn_level.onclick = reload_image;
+			btn2.onclick= reload_image;
 			
 			btn.onclick= check_input; // function to check if the input is correct, after clicking the button
 
@@ -150,13 +151,11 @@
 					document.getElementById("skip").style.visibility="visible";
 				} 
 			}    
-            
-            btn2.onclick= reload_image;
-
 
 		}
     </script>
     {% else %}
     <div> You know every word </div>
+    <div> You can start over if you want to! <a href="/restart">Reset</a></div>
     {% endif %}
 {% endblock %}
