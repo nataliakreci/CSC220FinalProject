@@ -14,6 +14,8 @@
 	<div class="full-img">
       <img class="displayed-img">
     </div>
+    <div id="word">
+    </div>
     Your answer:<br>
   	<input class="input" id="input"  type="text" name="input" value="">
   	<br>
@@ -28,7 +30,7 @@
     	initialize();
     	function initialize() {
     		document.getElementById("{{ mode }}").checked = true;
-    		if ({{ image }}) {
+    		if ({{ image }} == true) {
 				var displayedImage = document.querySelector('.displayed-img');
 				var index = Math.floor(Math.random() * images.length);
 				var img = images[index]
@@ -36,17 +38,27 @@
 				displayedImage.setAttribute('width', '200');
 				displayedImage.setAttribute('height', '300');
 				displayedImage.setAttribute('id', img.word);
-			
-				btn = document.querySelector('.enter');
-				btn2 = document.querySelector('.skip');
-				document.getElementById("skip").style.visibility="hidden";
-				attempts = 0;
-			
-				var bool = true;
-				var timeStart;
-				var timeEnd;
-				var d;
 			}
+			else {
+				var index = Math.floor(Math.random() * images.length);
+				var word = images[index]
+				document.getElementById("word").innerHTML = word.word;
+			}
+			
+			btn = document.querySelector('.enter');
+			btn2 = document.querySelector('.skip');
+			
+			btn_mode = document.querySelector('.mode');;
+			btn_mode.onclick = change_mode;
+			
+			document.getElementById("skip").style.visibility="hidden";
+			attempts = 0;
+			
+			var bool = true;
+			var timeStart;
+			var timeEnd;
+			var d;
+			
 			document.getElementById("input").addEventListener("keypress", function() { // function to start the timer
 				if (bool==true){
 					d = new Date();
@@ -54,14 +66,51 @@
 					bool = false;
 				}
      		}, false);
+     		
+     		function change_mode() {
+				var mode = document.forms[0];
+   				var mode_asked = "";
+    			var i;
+    			for (i = 0; i < mode.length; i++) {
+        			if (mode[i].checked) {
+            			mode_asked = mode[i].value;
+        			}
+    			}
+    			if (mode_asked==4) {
+					window.location.href = "/practice_left";
+				}
+				else if (mode_asked==5) {
+					window.location.href = "/practice_right";
+				}
+				else {
+					window.location.href = "/play_for_fun";
+				}
+			}
 			
-			function check_input(){ // function to check if the input is correct
+			function check_input_img(){ // function to check if the input is correct for the image
 				var input = document.querySelector('.input');
 				if (input.value==displayedImage.id){
 					var d= new Date();
 					timeEnd = d.getTime();
 					alert("Correct. Your time was " + ((timeEnd-timeStart)/1000) + "seconds!");
 					next_image();
+				}
+				else{
+					bool = true; // to restart the timer
+					attempts += 1;
+					skip(attempts); // check if the skip button should appear
+					alert("Try again");
+					input.value= '';
+				}
+			}
+			
+			function check_input_word(){ // function to check if the input is correct for the word (right/left hands)
+				var input = document.querySelector('.input');
+				if (input.value == document.getElementById("word").innerHTML){
+					var d= new Date();
+					timeEnd = d.getTime();
+					alert("Correct. Your time was " + ((timeEnd-timeStart)/1000) + "seconds!");
+					next_word();
 				}
 				else{
 					bool = true; // to restart the timer
@@ -83,11 +132,32 @@
 				input.value= '';
 			}
 			
-			btn.onclick=check_input;
+			function next_word(){ 
+				bool = true; // to restart the timer
+				var index = Math.floor(Math.random() * images.length);
+				var word = images[index]
+				document.getElementById("word").innerHTML = word.word;
+				attempts = 0; // counter back to 0
+				document.getElementById("skip").style.visibility="hidden"; // button hidden again					
+				input.value= '';
+			}
+			if ({{ image }} == true) {
+					btn.onclick=check_input_img;
+			}
+			else {
+					btn.onclick=check_input_word;
+			}
+			
+			
 
-			$(document).keypress(function (e) { // function to check if the input is correct, after pressing enter
+			$(document).keypress(function (e) {
                 if (e.which == 13 || event.keyCode == 13) {
-                    check_input();
+                	if ({{ image }} == true) {
+						check_input_img();
+					}
+					else {
+						check_input_word();
+					}
                 }
             });
             
@@ -101,7 +171,12 @@
 			}            
             
             btn2.onclick= function() { // change for another another image
-				next_image();
+				if ({{ image }} == true) {
+					next_image();
+				}
+				else {
+					next_word();
+				}
 			}		
 		}
     </script>

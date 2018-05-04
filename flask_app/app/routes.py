@@ -50,7 +50,7 @@ def select_one_hand(hand):
     """
     conn = create_connection("app.db")
     cur = conn.cursor()
-    cur.execute("SELECT * FROM hand where num= ?", (hand,))
+    cur.execute("SELECT * FROM hands where num= ?", (hand,))
  
     rows = cur.fetchall()
     r = [dict((cur.description[i][0], value) for i, value in enumerate(row)) for row in rows]
@@ -257,12 +257,12 @@ def play_for_fun():
 @app.route('/practice_left')
 def practice_left():
 	query = select_one_hand(4)
-	return render_template('practice.html', title='Play for Fun', images=query, mode="left")
+	return render_template('practice.html', title='Play for Fun', images=query, image=0, mode="left")
 	
 @app.route('/practice_right')
 def practice_right():
 	query = select_one_hand(5)
-	return render_template('practice.html', title='Play for Fun', images=query, mode="right")
+	return render_template('practice.html', title='Play for Fun', images=query, image=0, mode="right")
 
 @app.route('/my_account')
 @login_required
