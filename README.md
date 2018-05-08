@@ -28,6 +28,6 @@ Once Flask is installed, you can run the project. These are the steps to run the
   http://127.0.0.1:5000/ 
 6) ENJOY THE GAME!
 
-This is just a prototype. Movement forward will including adding a better user interface, so that users can more accurately track their results; and we hope to add graphs. Also, we want a better layout, and better gaming experience! Perhaps this means better alerts and better design. If we have time, we will split words into whether they are "challenging" or "average" or "easy" so that children understand that certain words are harder to spell, and they can only play using certain words (for example, only playing with easier words). Lastly, we want to add a module to learn how to type properly, this will likely be a video that teaches children how to properly type!
+Movement forward will including adding a better user interface, so that users can more accurately track their results; and we hope to add graphs. Also, we would like to implement a better layout, and a better gaming experience! Perhaps this means better alerts and better design. 
 
 
