@@ -15,6 +15,7 @@ Two packages will be needed as well.
 
 3) $ pip install flask_sqlalchemy
 4) $ pip install flask_migrate
+5) $ pip install flask-wtf
 
 Once Flask is installed, you can run the project. These are the steps to run the app:
 1) Enter the correct file path. First, the main folder, then the flask_app folder inside. Type:
