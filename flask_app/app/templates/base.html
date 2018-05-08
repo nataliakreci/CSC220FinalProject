@@ -19,7 +19,7 @@
     	<header class="main-header" role="banner"> <img src ="static/ClickClackType.png" width = '850' height = '200' class = "center" > 
     	</header>
     	{% block leftbar %}
-    	<div class="nav">
+    	<div class="col-md-3 leftbar">
     	<div class="leftblock" >
         <div id="{% if '/index' == request.path %}nav-selected{% else %}nav-item{% endif %}"><a href="/index">Home</a></div>
         {% if current_user.is_authenticated %}

@@ -5,7 +5,7 @@
 	<p><b>Welcome to Practice Mode!</b> Feel free to practice spelling and typing words, your time will not be recorded. Have fun!</p>
     <p> Decide if you want to practice spelling words:
     <form >
-		<input type="radio" name="choice" value="0" id="all"> All</input>
+		<input type="radio" name="choice" value="0" id="all"> All Images</input>
 		<p>Or practice one hand:</p>
 		<input type="radio" name="choice" value="4" id="left"> Left Hand</input>
 		<input type="radio" name="choice" value="5" id="right"> Right Hand</input>
@@ -29,45 +29,43 @@
     	var images = {{ images|tojson }};
     	initialize();
     	function initialize() {
-    		document.getElementById("{{ mode }}").checked = true;
-    		if ({{ image }} == true) {
+    		document.getElementById("{{ mode }}").checked = true; // display the mode chosen
+    		if ({{ image }} == true) {  // if the user is playing the image mode
 				var displayedImage = document.querySelector('.displayed-img');
-				var index = Math.floor(Math.random() * images.length);
+				var index = Math.floor(Math.random() * images.length); // a random image will be displayed
 				var img = images[index]
 				displayedImage.setAttribute('src', 'static/'+img.image);
 				displayedImage.setAttribute('width', '200');
 				displayedImage.setAttribute('height', '300');
 				displayedImage.setAttribute('id', img.word);
 			}
-			else {
-				var index = Math.floor(Math.random() * images.length);
+			else { // and if the user is practicing a hand
+				var index = Math.floor(Math.random() * images.length); // a random word will be displayed
 				var word = images[index]
 				document.getElementById("word").innerHTML = word.word;
 			}
 			
 			btn = document.querySelector('.enter');
 			btn2 = document.querySelector('.skip');
-			
 			btn_mode = document.querySelector('.mode');;
-			btn_mode.onclick = change_mode;
+			btn_mode.onclick = change_mode; // function to change mode associate with button
 			
-			document.getElementById("skip").style.visibility="hidden";
-			attempts = 0;
+			document.getElementById("skip").style.visibility="hidden"; // button skip is hiddent
+			attempts = 0; // keep track of the attempts
 			
-			var bool = true;
-			var timeStart;
-			var timeEnd;
-			var d;
+			var bool = true; // boolean to start the timer
+			var timeStart; // start time variable
+			var timeEnd; // end time variable
 			
 			document.getElementById("input").addEventListener("keypress", function() { // function to start the timer
 				if (bool==true){
-					d = new Date();
+					var d = new Date();
 					timeStart = d.getTime();
 					bool = false;
 				}
      		}, false);
      		
-     		function change_mode() {
+     		function change_mode() { // change mode, from image to practice right or left hand
 				var mode = document.forms[0];
    				var mode_asked = "";
     			var i;
@@ -121,7 +119,7 @@
 				}
 			}
 			
-			function next_image(){ 
+			function next_image(){  // change the image
 				bool = true; // to restart the timer
 				var index = Math.floor(Math.random() * images.length);
 				var img = images[index]
@@ -132,7 +130,7 @@
 				input.value= '';
 			}
 			
-			function next_word(){ 
+			function next_word(){ // change the word
 				bool = true; // to restart the timer
 				var index = Math.floor(Math.random() * images.length);
 				var word = images[index]
@@ -147,30 +145,25 @@
 			else {
 					btn.onclick=check_input_word;
 			}
-			
-			
 
 			$(document).keypress(function (e) {
-                if (e.which == 13 || event.keyCode == 13) {
-                	if ({{ image }} == true) {
+                if (e.which == 13 || event.keyCode == 13) { // when the user presses enter
+                	if ({{ image }} == true) { // the image is checked
 						check_input_img();
 					}
 					else {
-						check_input_word();
+						check_input_word(); // or the word
 					}
                 }
             });
             
 			function skip(attempts){ // if there has been three attempts, the skip button appear
-				if(attempts < 3) {
-					document.getElementById("skip").style.visibility="hidden";
-				}
 				if(attempts >= 3){
 					document.getElementById("skip").style.visibility="visible";
 				} 
 			}            
             
-            btn2.onclick= function() { // change for another another image
+            btn2.onclick= function() { // change for another another image or another word by skipping
 				if ({{ image }} == true) {
 					next_image();
 				}

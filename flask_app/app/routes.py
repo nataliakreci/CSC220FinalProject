@@ -259,12 +259,12 @@ def play_for_fun():
 @app.route('/practice_left')
 def practice_left():
 	query = select_one_hand(4)
-	return render_template('practice.html', title='Play for Fun', images=query, image=0, mode="left")
+	return render_template('practice.html', title='Play for Fun', images=query, image=0, mode="left") # image=0 to indicate that the user is not in the image mode
 	
 @app.route('/practice_right')
 def practice_right():
 	query = select_one_hand(5)
-	return render_template('practice.html', title='Play for Fun', images=query, image=0, mode="right")
+	return render_template('practice.html', title='Play for Fun', images=query, image=0, mode="right")  # image=0 to indicate that the user is not in the image mode
 
 @app.route('/my_account')
 @login_required
