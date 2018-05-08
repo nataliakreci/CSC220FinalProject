@@ -321,11 +321,12 @@ def admin_add():
 def add():
 	input_image = request.args.get('input_image')
 	input_word = request.args.get('input_word')
+	input_level = request.args.get('input_level')
 	if (select_image(input_image)):
 		result= input_word+" could not be added. The image already exists."
 		return jsonify(result=result) 
 	else:
-		word = (input_image, input_word, 1)
+		word = (input_image, input_word, input_level)
 		print(add_word(word))
 		result= input_word +" has been added."
 		return jsonify(result=result)

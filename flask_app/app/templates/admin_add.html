@@ -4,7 +4,7 @@
 
     <h1>Add Images</h1>
     <p> Welcome dear Admin. If you want to add some images, here is the place! </p>
-    <p> Tell us the name of the image, and which word to associate with. </p>
+    <p> Tell us the name of the image, which word to associate with, and what level it corresponds to, from 1 to 3. </p>
     <p><b> Make sure the image is placed in the folder app/static <b></p>
 
     Your image:<br>
@@ -13,8 +13,11 @@
   	Your word:<br>
   	<input class="input_word" id="input_word" type="text" name=input_word value="">
   	<br>
+  	The level of the word:<br>
+  	<input class="input_level" id="input_level" type="text" name=input_level value="">
+  	<br>
 	
-	<button class="enter">Next</button>
+	<button class="enter">Add</button>
 
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -27,25 +30,38 @@
 			
 			$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
 			
-			btn.onclick= function() { // function to add the image to the database
+			function add_image() { // function to add the image to the database
 				var input_image = document.querySelector('.input_image');
 				var input_word = document.querySelector('.input_word');
-				if (input_image.value!= ""||input_word.value!= ""){
+				var input_level = document.querySelector('.input_level');
+				if (input_image.value!= ""&&input_word.value!= ""&&(input_level.value== "3"||input_level.value== "2"||input_level.value== "1")){ // fields cannot be null and the level needs to be 1, 2 or 3
 					alert("We will add that Boss");
 					$.getJSON($SCRIPT_ROOT + '/_add', { // calling the python function which will add the data to the db
         					input_image: input_image.value,
         					input_word: input_word.value,
+        					input_level: input_level.value,
       				}, function(data) {
         				$("#result").text(data.result);
         				input_image.value= '';
         				input_word.value= '';
+        				input_level.value= '';
         				alert(data.result);
   					});
 				}
 				else{
-					alert("Come on, type something");
+					alert("Wrong input. No field can be null, and the level needs to be between 1 and 3.");
+					input_image.value= '';
+        			input_word.value= '';
+        			input_level.value= '';
 				}
 			}
+			btn.onclick= add_image; // function called by clicking the add button
+			
+			$(document).keypress(function (e) { 
+                if (e.which == 13 || event.keyCode == 13) { // function called if the user presses enter
+                    add_image();
+                }
+            });
         	
 		}
     </script>
