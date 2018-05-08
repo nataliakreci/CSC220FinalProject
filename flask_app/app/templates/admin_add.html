@@ -34,7 +34,7 @@
 				var input_image = document.querySelector('.input_image');
 				var input_word = document.querySelector('.input_word');
 				var input_level = document.querySelector('.input_level');
-				if (input_image.value!= ""&&input_word.value!= ""&&(input_level.value== "3"||input_level.value== "2"||input_level.value== "1")){ // fields cannot be null and the level needs to be 1, 2 or 3
+				if (input_image.value!= "" && input_word.value!= "" && (input_level.value== "3"||input_level.value== "2"||input_level.value== "1")){ // fields cannot be null and the level needs to be 1, 2 or 3
 					alert("We will add that Boss");
 					$.getJSON($SCRIPT_ROOT + '/_add', { // calling the python function which will add the data to the db
         					input_image: input_image.value,

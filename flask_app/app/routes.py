@@ -14,9 +14,14 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from functools import wraps
 
+# Allow user to visit http://localhost:5000/admin and http://localhost:5000/admin/user
+	# We can therefore upgrade a user from simple user to admin
 admin = Admin(app, name='clickclacktype', template_mode='bootstrap3')
 admin.add_view(ModelView(User, db.session))
 
+
+
+# The following functions query and update the database
 
 def create_connection(db_file):
     """ create a database connection to a SQLite database """
@@ -195,7 +200,10 @@ def select_image(image):
 	conn.commit()
 	conn.close()
 	return r
-         
+
+
+
+# With the help of the previous functions, the routes defined below build the different pages of our websites and render the query to the templates associated        
 @app.route('/')
 @app.route('/index')
 def index():
@@ -297,7 +305,6 @@ def restart():
 	restart_words(current_user.username)
 	return render_template('brand_new.html', title='Restarted')
 
-
 # Wrapper to authorize admin only
 def admin_access(f):
     @wraps(f)
@@ -307,7 +314,6 @@ def admin_access(f):
         	return redirect(url_for('login', next=request.url))
         return f(*args, **kwargs)
     return decorated_function
-
 
 @app.route('/admin_add')
 @login_required
@@ -364,7 +370,6 @@ def password_changed():
 	user.set_password(input_password)
 	db.session.commit()
 	return jsonify(result="Your password has been changed.")     
-     
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
