@@ -34,9 +34,9 @@
     	var images = {{ images|tojson }};
     	initialize();
     	function initialize() {
-    		document.getElementById("{{ level }}").checked = true;
+    		document.getElementById("{{ level }}").checked = true; // display the level chosen
 			var displayedImage = document.querySelector('.displayed-img');
-			var index = Math.floor(Math.random() * images.length);
+			var index = Math.floor(Math.random() * images.length); // random image will be displayed
 			var img = images[index]
 			displayedImage.setAttribute('src', 'static/'+img.image);
 			displayedImage.setAttribute('width', '200');
@@ -46,16 +46,16 @@
 			btn = document.querySelector('.enter');
 			btn2 = document.querySelector('.skip');
 			btn_level = document.querySelector('.level');
-			document.getElementById("skip").style.visibility="hidden";
-			attempts = 0; // counter for the skip button
+			document.getElementById("skip").style.visibility="hidden"; // skip button invisible again
+			attempts = 0; // counter for the skip button back to 0
 			
-			var bool = true; // counter to start the timer
-			var timeStart; // start time
-			var timeEnd; // end time
+			var bool = true; // boolean to start the timer
+			var timeStart; // start time variable
+			var timeEnd; // end time variable
 			
-			$SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+			$SCRIPT_ROOT = {{ request.script_root|tojson|safe }}; // to call the python functions in order to modify the database
 			
-			document.getElementById("input").addEventListener("keypress", function() {
+			document.getElementById("input").addEventListener("keypress", function() { // when someone type something in the input
 				if (bool==true){
 					var d = new Date();
 					timeStart = d.getTime(); // timer get started
@@ -63,7 +63,7 @@
 				}
      		}, false);
      		
-     		function reload_image() {
+     		function reload_image() { // load a new page, according to the level asked
 				var level = document.forms[0];
    				var level_asked = "";
     			var i;
@@ -115,18 +115,15 @@
 			btn_level.onclick = reload_image;
 			btn2.onclick= reload_image;
 			
-			btn.onclick= check_input; // function to check if the input is correct, after clicking the button
+			btn.onclick= check_input; // function called when the button is clicked
 
-			$(document).keypress(function (e) { // function to check if the input is correct, after pressing enter
-                if (e.which == 13 || event.keyCode == 13) {
+			$(document).keypress(function (e) { 
+                if (e.which == 13 || event.keyCode == 13) { // function called if the user presses enter
                     check_input();
                 }
             });
             
             function skip(attempts){ // if there has been three attempts, the skip button appear
-				if(attempts < 3) {
-					document.getElementById("skip").style.visibility="hidden";
-				}
 				if(attempts >= 3){
 					document.getElementById("skip").style.visibility="visible";
 				} 
