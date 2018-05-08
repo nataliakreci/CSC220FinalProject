@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+    <h1>Hello</h1>
+    <p> Here are all the image you will get to play with on this app:<p/>
+    <div>
+    {% for image in images %}
+    	<span class="col-md-4"><img src="static/{{ image.image }}" height="70" width="70"></span>
+    {% endfor %}
+    </div>
+{% endblock %}

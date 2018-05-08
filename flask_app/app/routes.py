@@ -10,14 +10,12 @@ from .models import User
 from flask_login import current_user, login_user
 from flask_login import login_required, logout_user
 from app import db
-
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
+from functools import wraps
 
 admin = Admin(app, name='clickclacktype', template_mode='bootstrap3')
 admin.add_view(ModelView(User, db.session))
-
-from functools import wraps
 
 
 def create_connection(db_file):
@@ -46,7 +44,7 @@ def select_all_images():
 
 def select_one_hand(hand):
     """
-    Query all rows in the image table
+    Query all words in the table hands, according to the hand. 4 for left and 5 for right
     """
     conn = create_connection("app.db")
     cur = conn.cursor()
@@ -142,7 +140,7 @@ def select_untried_words_user(username):
 
 def select_untried_words_level_user(username, level):
     """
-    Query all untried word of a user in the user_tried_images and the user_known_images table
+    Query all untried word of a user in the user_tried_images and the user_known_images table at a specific level
     """
     conn = create_connection("app.db")
     cur = conn.cursor()
@@ -171,7 +169,7 @@ def restart_words(username):
     
 def add_word(word):
     """
-    Create a association user - word into the user_known_images table
+    Create an association user - word into the user_known_images table
     """
     conn = create_connection("app.db")
     sql = ''' INSERT INTO image(image, word, num)
@@ -185,7 +183,7 @@ def add_word(word):
     
 def select_image(image):
 	"""
-    Query the user row in the user table
+    Select a specific image
     """
 	conn = create_connection("app.db")
 	cur = conn.cursor()
@@ -201,8 +199,12 @@ def select_image(image):
 @app.route('/')
 @app.route('/index')
 def index():
+	return render_template('index.html', title='Home')
+
+@app.route('/images')
+def images():
 	query = select_all_images()
-	return render_template('index.html', title='Home', images=query)
+	return render_template('word_list.html', title='Images', images=query)
 
 @app.route('/known')
 @login_required
@@ -295,6 +297,8 @@ def restart():
 	restart_words(current_user.username)
 	return render_template('brand_new.html', title='Restarted')
 
+
+# Wrapper to authorize admin only
 def admin_access(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
